@@ -1,0 +1,123 @@
+.aboutpage {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+  background: #494B4D;
+  background: linear-gradient(45deg, #494B4D, #010101);
+}
+
+.navlogo {
+  font-family: Outfit;
+  font-family: 500;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 3rem;
+  color: #ff4500; /* Adjust color as needed */
+  z-index: 2; /* Ensure it appears above other elements */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+
+.aboutImg {
+  width: 100vw; /* Cover full width */
+  height: 580px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Send image behind content */
+  object-fit: cover; /* Maintain aspect ratio */
+  border-bottom-left-radius: 30px; 
+  border-bottom-right-radius: 30px; 
+}
+
+.aboutText {
+  padding: 20px;
+  margin-top: 620px; /* Adjust for consistent spacing */
+}
+
+.aboutText h1 {
+  color: #cc5500; /* Black color for headings */
+  font-size: 2.5rem;
+  margin: 20px 0;
+  text-shadow: 2px 1px 3px rgb(0, 0, 0);
+}
+
+.aboutText p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  line-height: 1.5;
+  color: #E0E0E0; /* Black color for paragraphs */
+}
+
+.aboutFooter {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.footerText h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #E0E0E0; /* Black color for footer heading */
+}
+
+.footerText {
+  display: flex;
+  justify-content: space-between; /* Spread out items */
+  align-items: center;
+  margin-top: 10px;
+  color: #E0E0E0; /* Black color for footer text */
+}
+
+.footerText p {
+  margin: 0;
+  font-size: 16px;
+  color: #E0E0E0; /* Black color for footer paragraphs */
+}
+
+/* Horizontal line above the footer */
+.aboutFooter::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #E0E0E0; /* Black line */
+  margin-bottom: 10px;
+}
+
+.get-started {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 60px;
+  width: 140px;
+  /* margin-top: 70px; */
+  padding: 5px 10px;
+  /* padding-left: 30px; */
+  border-radius: 60px;
+  background-color: #d3d3d3;
+  cursor: pointer;
+  z-index: 4;
+  position: absolute; /* Position absolute */
+  top: 20px; /* Adjust vertical position */
+  right: 20px; /* Adjust horizontal position */
+}
+
+.get-started p{
+  color: #010101;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.getarrowimg {
+  width: 25px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.getarrowimg:hover {
+  transform: translate(5px); 
+}

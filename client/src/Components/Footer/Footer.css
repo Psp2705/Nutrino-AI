@@ -1,0 +1,52 @@
+.Footer-container{
+  position: relative;
+}
+
+.Footer-container>hr{
+  margin-top: 8rem;
+  border: 1px solid lightgray;
+}
+
+.footer {
+  padding: 1rem 2rem ;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 4rem;
+}
+
+.social-links>img {
+  margin-top: -5.5rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+/* .foot-blur-1 {
+  position: absolute;
+  margin-top: 80px;
+  margin-right: 20px;
+  width: 26rem;
+  height: 4rem;
+  filter: blur(200px);
+  background: red;
+} */
+
+/* Orange blur circle */
+/* .foot-blur-2 {
+  bottom: 0;
+  right: 0; Positioned next to the red blur */
+  /* width: 26rem;
+  height: 5rem;
+  filter: blur(140px);
+  background: rgb(255, 115, 0);
+  z-index: -1; /* Stay behind other elements */
+/* }  */
+

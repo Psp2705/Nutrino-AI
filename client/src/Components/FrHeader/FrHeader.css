@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-title {
+  margin-top: 0;
+  color: white;
+}
+
+.header-menu {
+  list-style: none;
+  display: flex;
+  margin-right: -370px;
+  gap: 2rem;
+  text-decoration: none;
+  color: white;  
+}
+
+.header-menu>li:hover {
+  cursor: pointer;
+  color: orangered;
+  cursor: pointer;
+}
+
+
+@media screen and (max-width: 768px) {
+  .header>:nth-child(2) {
+    position: fixed;
+    right: 2rem;
+    z-index: 99;
+  }
+
+  .header-menu {
+    flex-direction: column;
+    background-color: gray;
+    padding: 2rem;
+  }
+}

@@ -1,0 +1,212 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  overflow-x: hidden; 
+  background-color: #363d42;
+}
+
+body::-webkit-scrollbar {
+  width: 0; 
+  height: 0;
+}
+
+.login-container {
+  background-color: #363d42;
+}
+
+.login-page {
+  position: absolute;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px; /* Adjusted for standard size */
+  height: 600px; /* Adjusted for standard size */
+  border-radius: 10px;
+  padding: 30px;
+  background: transparent;
+  /* background: linear-gradient(45deg, #ff8c00, #363d42); */
+  z-index: 1;
+}
+
+.overlay-login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #292a2c;
+  z-index: -1;
+}
+
+.login-page::before {
+  position: absolute;
+  content: "";
+  height: calc(100% - 20px);
+  width: calc(100% - 20px);
+  background: linear-gradient(210deg, #8f540b 10%, #363d42 75%); 
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+
+
+.login-page header {
+  position: absolute;
+  top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.login-page header span {
+  font-size: 30px; /* Adjusted for standard size */
+  color: #0b1f36;
+}
+
+.login-page header span i {
+  background: linear-gradient(90deg, #0b1f36, #801818);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.login-page .title {
+  position: relative;
+  font-size: 36px; /* Adjusted for standard size */
+  text-align: center;
+  font-weight: bold;
+  background: linear-gradient(45deg, #000000, #066969dd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.login-page form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adjusted for standard spacing */
+  width: 100%;
+  margin-top: 20px; /* Adjusted for standard spacing */
+}
+
+.login-page form .username,
+.login-page form .email,
+.login-page form .password {
+  position: relative;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+/* .login-page form input {
+  width: 100%;
+  font-size: 18px; /* Adjusted for standard size */
+  /* border: none;
+  background-color: transparent;
+  padding: 10px 5px;
+  border-bottom: 1px solid #002147;
+  color: #000000;
+} */
+
+/* .login-page form input:focus {
+  outline: none;
+}  */
+
+.input-login {
+  width: 100%;
+  font-size: 18px; 
+  border: none; 
+  border-bottom: 1px solid #002147;
+  background-color: transparent; 
+  color: #000000; 
+  padding: 10px 5px;
+}
+
+.input-login:focus {
+  outline: none; 
+  border-bottom: 1px solid #000080; 
+  background-color: rgba(0, 0, 0, 0.167);
+  border-radius: 20px;
+}
+
+.login-page form label {
+  position: absolute;
+  font-size: 16px; /* Adjusted for standard size */
+  top: 52px;
+  left: 5px;
+  margin-bottom: 20px;
+  color: rgb(0, 0, 0);
+  transition: 0.2s ease;
+}
+
+.login-page form input:focus ~ label,
+.login-page form input:valid ~ label {
+  top: -20px;
+  color: #000080;
+}
+
+/* .login-page form input {
+  box-shadow: none; 
+  border-radius: 0; 
+} */
+
+
+.login-page form input {
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0; /* Remove any rounded borders */
+  box-shadow: none; /* Remove any box shadows that could be causing the border */
+  outline: none; 
+  border-bottom: 1px solid #000080;
+}
+
+.status {
+  width: 60px;
+  margin: 20px auto; /* Adjusted for standard spacing */
+  transform: scale(0);
+  animation: show 0.5s ease forwards;
+}
+
+@keyframes show {
+  to {
+    transform: scale(1);
+  }
+}
+
+.error {
+  color: red;
+  font-size: 18px; /* Adjusted for standard size */
+  margin: 20px auto; /* Adjusted for standard spacing */
+  text-align: center;
+}
+
+.login-page form button {
+  background-color: #066969dd;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  color: white;
+  font-size: 18px; /* Adjusted for standard size */
+  padding: 10px 20px; /* Adjusted for standard spacing */
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.user-stat {
+  color: white;
+  font-size: 18px; /* Adjusted for standard size */
+  margin: 20px auto; /* Adjusted for standard spacing */
+}
+
+.user-stat b {
+  color: #002147;
+  cursor: pointer;
+}

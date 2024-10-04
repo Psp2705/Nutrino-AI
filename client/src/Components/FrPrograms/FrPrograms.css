@@ -1,0 +1,96 @@
+.Programs {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+.programs-header {
+  display: flex;
+  margin-top: 10rem;
+  gap: 5rem;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 3rem;
+  justify-content: center;
+  color: white;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.program-categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.program-card {
+  background-color: rgb(92, 92, 92);
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  max-width: 300px;
+  text-align: center;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.program-card:hover {
+  background-color: #ff8c00;
+  cursor: pointer;
+}
+
+/* .card-image {
+  height: 150px;
+  overflow: hidden;
+} */
+
+.card-image img {
+  width: 40px;
+  height: 40px;
+  display: flex;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-content h3 {
+  margin: 0.5rem 0;
+  color: white;
+}
+
+.card-content p {
+  color: white;
+}
+
+.btn-join {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: transparent;
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 0.5rem; /* Move icon to the end */
+}
+
+
+@media screen and (max-width: 768px) {
+  .programs-header {
+    flex-direction: column;
+    gap: 1rem;
+    font-size: x-large;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .program-categories {
+    flex-direction: column;
+  }
+  
+}

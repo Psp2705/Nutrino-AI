@@ -1,0 +1,133 @@
+/* RecipeStream.css */
+
+/* Container to hold the two sides */
+.container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Styling for the left side */
+.left-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: rgba(255, 165, 0, 0.1); /* Light orange background */
+}
+
+.info-card {
+  background-color: rgba(255, 165, 0, 0.2); /* Transparent orange card */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: orange;
+  margin-bottom: 20px;
+}
+
+.info-card h1 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.info-card p {
+  font-size: 18px;
+}
+
+/* Search container styles */
+.search-container {
+  margin-top: 20px;
+}
+
+.search-input {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.5); /* Transparent background */
+  border-radius: 4px;
+  font-size: 16px;
+  color: rgb(58, 58, 57);
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.search-button {
+  width: 100%;
+  padding: 10px;
+  background-color: orange;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: darkorange;
+}
+
+/* Styling for the right side */
+.right-side {
+  flex: 2;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.recipe-card {
+  flex: 1 1 calc(50% - 20px); /* Two cards per row */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  background-color: rgba(255, 165, 0, 0.2); /* Transparent orange background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: orange; /* Text color */
+}
+
+.recipe-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.recipe-image {
+  width: 100%;
+  height: auto;
+  max-height: 250px; /* Increased maximum height for better image display */
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Text styles */
+h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: rgb(232, 229, 229);
+}
+
+h4 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+  color: rgb(167, 163, 163);
+}
+
+ul {
+  list-style-type: disc;
+  margin: 0;
+  padding: 0 20px;
+  color: rgb(190, 187, 187);
+}
+
+li {
+  margin-bottom: 5px;
+  color: rgb(190, 187, 187);
+}

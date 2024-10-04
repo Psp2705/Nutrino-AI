@@ -1,0 +1,75 @@
+.hero {
+  margin: 0px 120px;
+  margin-top: 200px;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero-text {
+  color: #fff;
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 100px;
+  margin-right: 700px; /* Adjust margin-right as needed */
+  margin-top: 100px;
+  z-index: 5;
+}
+
+.hero-explore {
+  /* Removed margin-top */
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  height: 60px;
+  width: 180px;
+  padding: 5px 10px;
+  padding-left: 30px;
+  border-radius: 60px;
+  background-color: white;
+  position: fixed; /* Make it absolute within the hero */
+  bottom: 130px; /* Position below the Explore button with 20px padding */
+  left: 130px; /* Position below and to the right of Explore button */
+  z-index: 4;
+}
+
+.hero-explore p {
+  color: #292929;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.hero-explore .arrowimg {
+ width: 30px;
+ cursor: pointer;
+ transition: transform 0.3s ease;
+}
+
+.arrowimg:hover {
+  transform: translateX(5px);
+}
+
+.hero-dots {
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  list-style: none;
+  position: fixed; /* Make it absolute within the hero */
+  bottom: 80px; /* Position below the Explore button with 20px padding */
+  left: 130px; /* Position below and to the right of Explore button */
+  z-index: 4;
+}
+
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 7.5px;
+  cursor: pointer;
+}
+
+.hero-dot.orange {
+  background: orangered;
+}

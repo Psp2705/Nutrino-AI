@@ -1,0 +1,129 @@
+/* StrengthVids.css */
+
+/* Main container for the videos page */
+.strength-vids-container {
+  position: relative; /* Position relative for absolute children */
+  padding: 20px;
+  max-width: 1500px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  overflow: hidden; /* To hide overflow of the blurred circles */
+}
+
+/* Header styling */
+.strength-vids-header {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #bd591b;
+  margin-bottom: 30px;
+}
+
+/* Video list grid */
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+  position: relative; /* Ensures blur circles are behind this content */
+  z-index: 2; /* Positioning video content above the blurred circles */
+}
+
+/* Individual video card styling with transparent glossy effect */
+.video-card {
+  background-color: rgba(255, 255, 255, 0.2); /* White with transparency */
+  backdrop-filter: blur(15px); /* Glossy effect */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease;
+  padding: 10px;
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Thumbnail styling */
+.video-thumbnail {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+/* Video title styling */
+.video-title {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 10px 0;
+}
+
+/* Watch Video link styling */
+.watch-video-link {
+  text-decoration: none;
+  color: #1e90ff;
+  font-weight: bold;
+}
+
+.watch-video-link:hover {
+  color: #ff4500;
+}
+
+/* Background blur circles */
+.strength-vids-container::before,
+.strength-vids-container::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+  filter: blur(100px);
+  z-index: 1; /* Ensuring blur circles are behind the main content */
+}
+
+/* First circle (orange) */
+.strength-vids-container::before {
+  width: 300px;
+  height: 300px;
+  background-color: #ff6600; /* Orange shade */
+  top: -50px;
+  left: -50px;
+}
+
+/* Second circle (red) */
+.strength-vids-container::after {
+  width: 400px;
+  height: 400px;
+  background-color: #ff0000; /* Red shade */
+  bottom: -80px;
+  right: -80px;
+}
+
+/* Additional blur circles */
+.strength-vids-container .circle-1 {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background-color: #ff9933; /* Lighter orange shade */
+  top: 150px;
+  left: 40%;
+  border-radius: 50%;
+  opacity: 0.4;
+  filter: blur(80px);
+  z-index: 1;
+}
+
+.strength-vids-container .circle-2 {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background-color: #ff3300; /* Darker red shade */
+  top: 60%;
+  left: 20%;
+  border-radius: 50%;
+  opacity: 0.5;
+  filter: blur(120px);
+  z-index: 1;
+}

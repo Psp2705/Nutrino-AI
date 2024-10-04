@@ -1,0 +1,154 @@
+.cardio-training {
+  padding: 20px;
+  color: orange; /* Changed all text color to orange */
+  background-color: #212427;
+  position: relative; /* Position relative for blur circles */
+  overflow: hidden; /* Ensure blur circles do not overflow */
+}
+
+.cardio-training h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cardio-videos {
+  margin-bottom: 30px;
+}
+
+.cardio-videos h2 {
+  margin-bottom: 15px;
+  color: rgb(183, 180, 180);
+}
+
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px; /* Increased gap for space between videos */
+  margin: 0;
+}
+
+.video-card {
+  width: 100%;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.video-title {
+  margin-top: 10px;
+  font-size: 1.2em;
+  color: rgb(165, 163, 163); /* Changed YouTube title color to light gray */
+}
+
+.watch-video-link {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.watch-video-link:hover {
+  text-decoration: underline;
+}
+
+.personalized-plans,
+.workout-logger,
+.cardio-challenges,
+.nutrition-guide,
+.motivational-quote {
+  margin-bottom: 30px;
+}
+
+.personalized-plans h2,
+.cardio-challenges h2,
+.nutrition-guide h2,
+.motivational-quote h2{
+  color: rgb(165, 163, 163);;
+}
+
+.personalized-plans button,
+.workout-logger button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: orange; /* Changed button background color to orange */
+  color: #333; /* Button text color changed to dark gray */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.personalized-plans button:hover,
+.workout-logger button:hover {
+  background-color: #ff8000; /* Darker shade of orange for hover effect */
+}
+
+.workout-logger form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.workout-logger label {
+  margin-bottom: 10px;
+}
+
+.workout-logger input {
+  margin-top: 5px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.cardio-challenges,
+.nutrition-guide {
+  padding: 10px;
+  border-radius: 4px;
+  background: rgba(255, 165, 0, 0.2); /* Transparent and glossy effect */
+  backdrop-filter: blur(10px); /* Glossy background effect */
+}
+
+.motivational-quote {
+  text-align: center;
+}
+
+/* Blur circles */
+.blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  z-index: 0;
+}
+
+.circle1 {
+  width: 500px;
+  height: 400px;
+  background: rgba(255, 68, 0, 0.377); /* Red-orange color */
+  top: -60px;
+  left: -90px;
+}
+
+.circle2 {
+  width: 500px;
+  height: 400px;
+  background: rgba(255, 140, 0, 0.6); /* Dark orange color */
+  top: 300px;
+  left: 60%;
+}
+
+.circle3 {
+  width: 250px;
+  height: 250px;
+  background: rgba(255, 99, 71, 0.6); /* Tomato color */
+  bottom: 100px;
+  right: 20%;
+}
+
+.circle4 {
+  width: 350px;
+  height: 350px;
+  background: rgba(255, 165, 0, 0.6); /* Orange color */
+  bottom: 300px;
+  left: 10%;
+}

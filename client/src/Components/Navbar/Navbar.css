@@ -1,0 +1,73 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  position: fixed;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+.nav-logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 42px;
+  font-weight: 500;
+  color: white;
+  position: fixed;
+  left: 80px; /* Move logo to the left */
+  top: 10px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  font-size: 18px;
+  gap: 90px;
+  position: fixed;
+  top: 10px;
+  right: 100px; /* Move menu list to the right */
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ff6347; /* Hover color change */
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: #ff6347; /* Underline color on hover */
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%; /* Full-width underline on hover */
+}
+
+.nav-contact {
+  border-radius: 50px;
+  padding: 10px 38px;
+  background: #fff;
+  color: #262626;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 900px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-contact:hover {
+  background: #ff6347;
+  color: white;
+}

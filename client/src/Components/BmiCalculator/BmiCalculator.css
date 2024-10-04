@@ -1,0 +1,128 @@
+/* Ensure full height and scrolling */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  background-color: #1a1a1a;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content to the top */
+  overflow-y: auto; /* Allow scrolling */
+  padding: 2rem;
+  position: relative;
+}
+
+.background-circle-orange,
+.background-circle-red {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Adjust position of circles */
+.background-circle-orange {
+  width: 600px;
+  height: 600px;
+  background-color: rgba(255, 140, 0, 0.7); /* Orange */
+  top: -100px;
+  left: -150px;
+}
+
+.background-circle-red {
+  width: 500px;
+  height: 500px;
+  background-color: rgba(255, 99, 71, 0.7); /* Red */
+  bottom: -150px;
+  right: -200px;
+}
+
+/* BMI Calculator Container */
+.bmi-calculator-container {
+  position: relative;
+  z-index: 1; /* Make sure the card is above background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.1); /* Transparent card */
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); /* Shadow */
+  max-width: 600px;
+  margin-bottom: 2rem; /* Add margin at the bottom for scrolling */
+  margin-top: 120px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #ff8c00;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-section input {
+  padding: 0.7rem;
+  font-size: 1.2rem;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #ff8c00;
+  width: 250px;
+}
+
+button {
+  background-color: #ff8c00;
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.result-section {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.result-section h2 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.result-section h3 {
+  font-size: 1.5rem;
+  color: #ff6347;
+}
+
+.planner-section {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.planner-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.planner-section li {
+  font-size: 1rem;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}

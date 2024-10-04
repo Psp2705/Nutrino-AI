@@ -1,0 +1,76 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #363d42, #ee6e44);
+  width: 1600px;
+}
+
+.personal-info-form {
+  display: flex;
+  width: 80%;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Ensures the image doesn't exceed the form boundaries */
+}
+
+.form-left, .form-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-left {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.form-right {
+  background: url('../../assets/img5.jpg') no-repeat center center;
+  background-size: cover;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  padding: 0; /* Remove padding to ensure image goes edge-to-edge */
+}
+
+/* Remove the img styling as we're using a background image instead */
+.form-right img {
+  display: none; /* Hide the image tag if still present */
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.personal-info-form input,
+.personal-info-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #fcb69f;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #ff6f61;
+}

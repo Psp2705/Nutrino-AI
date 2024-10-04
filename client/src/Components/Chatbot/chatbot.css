@@ -1,0 +1,124 @@
+/* Chatbot.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  background-color: #1a1a1a;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content to the top */
+  overflow-y: auto; /* Allow scrolling */
+  padding: 2rem;
+  position: relative;
+}
+
+.background-circle-orange,
+.background-circle-red {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Adjust position of circles */
+.background-circle-orange {
+  width: 600px;
+  height: 600px;
+  background-color: rgba(255, 140, 0, 0.7); /* Orange */
+  top: -100px;
+  left: -150px;
+}
+
+.background-circle-red {
+  width: 500px;
+  height: 500px;
+  background-color: rgba(255, 99, 71, 0.7); /* Red */
+  bottom: -150px;
+  right: -200px;
+}
+.chatbot {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Transparent card */
+  border-radius: 15px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); /* Shadow */
+  max-width: 400px;
+  margin: 20px auto; /* Add margin at the bottom for scrolling */
+  font-family: 'Arial', sans-serif;
+}
+
+.chatbox {
+  height: 300px;
+  overflow-y: auto;
+  background-color: #f4f7fc;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: inset 0px 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chatbox .user {
+  text-align: right;
+  color: #b49408;
+  margin: 5px 0;
+  font-weight: 600;
+}
+
+.chatbox .bot {
+  text-align: left;
+  color: #0b120c;
+  margin: 5px 0;
+  font-weight: 600;
+}
+
+.input-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #f6e4e4;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #151212;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.4);
+}
+
+button {
+  padding: 12px 25px;
+  background-color: #e2c419;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  box-shadow: 0px 5px 15px rgba(0, 91, 191, 0.2);
+}
+
+button:active {
+  background-color: #00408a;
+}
