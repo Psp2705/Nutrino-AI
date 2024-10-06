@@ -39,7 +39,7 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync clien/dist/ s3://nutri-ai --delete
+          aws s3 sync client/dist/ s3://nutri-ai --delete
 
       - name: Invalidate CloudFront cache
         run: |
