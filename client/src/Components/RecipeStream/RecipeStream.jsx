@@ -9,7 +9,7 @@ const RecipeStream = () => {
 
     const fetchRecipes = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/recipes', {
+            const response = await axios.post('https://nutri-ai-server.iamaan1410.workers.dev', {
                 preferredIngredients: preferredIngredients.split(',').map(ing => ing.trim()),
                 allergies: allergies.split(',').map(all => all.trim())
             });
