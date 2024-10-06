@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "client/"
+      - "client/**"
 
 jobs:
   build-and-deploy:
@@ -39,7 +39,7 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync frontend/dist/ s3://nutri-ai --delete
+          aws s3 sync clien/dist/ s3://nutri-ai --delete
 
       - name: Invalidate CloudFront cache
         run: |
