@@ -36,7 +36,7 @@ const CardioTraining = () => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const API_KEY = "AIzaSyCNsOFGB0fQCnIev7SYLizUQKB0V03p35c"; // Insert your YouTube API key here
+      const API_KEY = "AIzaSyCJxo1MBy10Bgx39JdeAUbLSvqlPJ-c2xU"; // Insert your YouTube API key here
       const searchQuery = "cardio training";
       const maxResults = 12; // Number of videos to fetch
 
