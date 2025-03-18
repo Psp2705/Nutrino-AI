@@ -3,6 +3,9 @@ import { db } from '../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import './User.css';
 import { useNavigate } from 'react-router-dom';
+import recipe1 from "../../assets/recipe1.webp"
+import recipe2 from "../../assets/recipe2.jpg"
+import recipe3 from "../../assets/recipe3.jpg"
 
 const User = ({ userName, userEmail }) => {
   const [userPreference, setUserPreference] = useState('');
@@ -70,11 +73,11 @@ const User = ({ userName, userEmail }) => {
 
   return (
     <div className="portfolio-container">
-      <nav className="navbar">
+      {/* <nav className="navbar">
         <button>Home</button>
         <button>Work</button>
         <button>About</button>
-      </nav>
+      </nav> */}
 
       <div className="main-content">
         <div className="card intro-card">
@@ -83,8 +86,15 @@ const User = ({ userName, userEmail }) => {
         </div>
 
         <div className="card-grid">
-          <div className="card image-card">
-            <div className="image-placeholder"></div>
+          <div className="card image-card" onClick={() => navigate("/recipe-reels")} >
+          <p>Scroll & Click to Explore Recipes</p>
+            <div className="image-placeholder">
+              <div className='image-scroll'>
+                <img src={recipe1} alt="Recipe 1" />
+                <img src={recipe2} alt="Recipe 2" />
+                <img src={recipe3} alt="Recipe 3" />
+              </div>
+            </div>
           </div>
           <div className="card skills-card">
             <h2>Health Profile</h2>
@@ -116,14 +126,16 @@ const User = ({ userName, userEmail }) => {
 
         <div className="card-grid">
           <div className="card work-card">
-            <div className="icon-placeholder"></div>
+            {/* <div className="icon-placeholder"></div> */}
             <h2>My Recipes</h2>
+            <p>Explore a world of flavors tailored just for you! With a click, generate delicious recipes that match your preferences and health needs. Find your favorite recipes here and create meals you'll love, every time.</p>
             <button onClick={handleGenerateRecipes}>Generate Recipes</button>
           </div>
           <div className="card about-card">
-            <div className="icon-placeholder"></div>
+            {/* <div className="icon-placeholder"></div> */}
             <h2>Favorite Recipes</h2>
-            <p onClick={handleFavoriteRecipes}>VIEW FAVORITES</p>
+            <p>Discover and save your favorite recipes here!</p>
+            <button onClick={handleFavoriteRecipes}>VIEW FAVORITES</button>
           </div>
         </div>
       </div>

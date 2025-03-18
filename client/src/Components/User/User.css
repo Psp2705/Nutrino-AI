@@ -170,23 +170,87 @@ body {
     left: 480px;
   }
   
-  .image-card .image-placeholder {
+  /* .image-card .image-placeholder {
     width: 400px;
     height: 200px;
     background-color: #C0B3FF;
     border-radius: 12px;
-  }
+  } */
+
+  .image-placeholder {
+    width: 400px;
+    height: 200px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.image-card p{
+  color: #444444;
+}
+
+.image-scroll {
+  display: flex;
+  flex-direction: column; /* Change to column for vertical scrolling */
+  overflow-y: auto; /* Allow vertical scrolling */
+  height: 100%; /* Fit the height of the placeholder */
+  scrollbar-width: none; 
+  /* scrollbar-color: rgba(255, 255, 255, 0.5) transparent; */
+}
+
+/* Custom scrollbar for Chrome, Safari */
+.image-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* .image-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.image-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); 
+  border-radius: 3px;
+} */
+
+.image-scroll img {
+  width: 100%; /* Make sure the images fit the width of the placeholder */
+  height: auto;
+  margin-bottom: 10px; /* Add some spacing between images */
+  border-radius: 12px;
+}
+
   
   .about-card {
     position: relative;
     width: 380px;
     top: -380px;
   }
+
+  .about-card p{
+    color: #444444;
+  }
+
+  .about-card button {
+    background-color: orange;
+    position: relative;
+    margin-top: 120px;
+  }
   
   .work-card, .about-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .work-card button{
+    background-color: orange;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .work-card p{
+    color: #444444;
   }
   
   .icon-placeholder {
