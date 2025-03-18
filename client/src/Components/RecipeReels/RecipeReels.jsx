@@ -35,6 +35,8 @@ const RecipeReels = () => {
 
   return (
     <div className="recipe-reels">
+      <div className="recipeblur-circle orange"></div>
+      <div className="recipeblur-circle red"></div>
       {recipes.map(recipe => (
         <div key={recipe.id} className="recipe-card">
           <h3>{recipe.name}</h3>

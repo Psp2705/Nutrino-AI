@@ -11,6 +11,8 @@ const FavoriteRecipes = () => {
 
   return (
     <div className="favorite-recipes">
+      <div className="favblur-circle orange"></div>
+      <div className="favblur-circle red"></div>
       <h2>Your Favorite Recipes</h2>
       {favoriteRecipes.length > 0 ? (
         favoriteRecipes.map((recipe, index) => (
