@@ -41,12 +41,17 @@ const RecipeStream = () => {
                         onChange={(e) => setAllergies(e.target.value)}
                         className="search-input"
                     />
+                    <input type='text' placeholder='Enter Height' classname="search-input" />
+                    <input type='text' placeholder='Enter Weight' classname="search-input" />
+                    <input type='text' placeholder='Enter Activity level' classname="search-input" />
                     <button onClick={fetchRecipes} className="search-button">Search</button>
                 </div>
             </div>
             <div className="right-side">
                 <div className="recipe-list">
                     {recipes.map((recipe, index) => (
+
+                        
                         <div key={index} className="recipe-card">
                             <h3>{recipe.title}</h3>
                             <img src={recipe.image} alt={recipe.title} className="recipe-image" />
