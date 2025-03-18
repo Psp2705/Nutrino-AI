@@ -50,6 +50,8 @@ const RecipeStream = () => {
             <div className="right-side">
                 <div className="recipe-list">
                     {recipes.map((recipe, index) => (
+
+                        
                         <div key={index} className="recipe-card">
                             <h3>{recipe.title}</h3>
                             <img src={recipe.image} alt={recipe.title} className="recipe-image" />
