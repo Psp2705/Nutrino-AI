@@ -1,232 +1,223 @@
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #F0F3FF;
-    font-family: Arial, sans-serif;
-  }
-
-
-  .blur-circle {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: -1;
-  }
-  
-  /* Orange Circle */
-  .orange {
-    width: 300px;
-    height: 300px;
-    background-color: orange;
-    top: 10%;
-    left: 10px;
-  }
-  
-  /* Red Circle */
-  .red {
-    width: 400px;
-    height: 400px;
-    background-color: red;
-    bottom: 15%;
-    right: 20%;
-  }
-  
-  /* Add these styles to your existing User.css file */
-  
-  .bmi-info {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    max-height: 165px;  /* Limit height to ensure it fits in the card */
-    overflow-y: auto;   /* Add vertical scrolling */
-    scrollbar-width: thin;  /* For Firefox */
-    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;  /* For Firefox */
-  }
-  
-  /* Custom scrollbar styling for WebKit browsers (Chrome, Safari) */
-  .bmi-info::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .bmi-info::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  .bmi-info::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 3px;
-  }
-  
-  .bmi-info h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 16px;  /* Slightly smaller font size */
-    color: #444444;
-  }
-  
-  .bmi-info p {
-    margin: 6px 0;  /* Reduced margin */
-    font-size: 14px;  /* Smaller font size */
-  }
-  
-  .health-plan {
-    margin-top: 10px;  /* Reduced margin */
-  }
-  
-  .health-plan h4 {
-    margin-bottom: 8px;
-    font-size: 14px;  /* Smaller font size */
-    color: #444444;
-  }
-  
-  .diet-list {
-    padding-left: 15px;  /* Reduced padding */
-    margin: 8px 0;
-  }
-  
-  .diet-list li {
-    margin-bottom: 6px;  /* Reduced margin */
-    font-size: 12px;  /* Smaller font size */
-    line-height: 1.3;  /* Reduced line height */
-    color: #444444;
-  }
-  
-  .skills h4 {
-    margin-top: 10px;  /* Reduced margin */
-    margin-bottom: 8px;
-    font-size: 14px;  /* Smaller font size */
-    color: #444444;
-  }
-  
-  .portfolio-container {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    height: 1000px;
-  }
-  
-  /* .navbar {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .navbar button {
-    background-color: white;
-    color: orange;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .navbar button:hover {
-    background-color: #e0e0e0;
-  } */
-  
-  .main-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 20px;
-    width: 80%;
-  }
-  
-  .card {
-    position: relative;
-    background-color: rgba(255, 255, 255, 0.877);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .intro-card {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    height: 300px;
-  }
-  
-  .skills-card {
-    grid-column: 3 / 4;
-    grid-row: 1 / 2;
-    position: relative;
-    right: 100px;
-    top: -380px;
-    width: 600px;
-    height: 300px;
-    overflow: hidden;  /* Hide any overflow */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .skills-card .skills {
-    padding: 10px;
-    background-color: #F0F0FF;
-    border-radius: 10px;
-    margin-top: auto;  /* Push to bottom of container */
-  }
-  
-  .work-card {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    position: relative;
-    top: -380px;
-    width: 380px;
-    height: 300px;
-    left: 478px;
-  }
-  
-  .card-grid {
-    grid-column: 1 / 4;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  .image-card {
-    position: relative;
-    left: 480px;
-  }
-  
-  /* .image-card .image-placeholder {
-    width: 400px;
-    height: 200px;
-    background-color: #C0B3FF;
-    border-radius: 12px;
-  } */
-
-  .image-placeholder {
-    width: 400px;
-    height: 200px;
-    background-color: rgba(218, 216, 216, 0);
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #F0F3FF;
+  font-family: Arial, sans-serif;
 }
 
-.image-card p{
+.blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+}
+
+/* Orange Circle */
+.orange {
+  width: 300px;
+  height: 300px;
+  background-color: orange;
+  top: 10%;
+  left: 10px;
+}
+
+/* Red Circle */
+.red {
+  width: 400px;
+  height: 400px;
+  background-color: red;
+  bottom: 15%;
+  right: 20%;
+}
+
+/* Add these styles to your existing User.css file */
+
+.bmi-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  max-height: 165px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+/* Custom scrollbar styling for WebKit browsers (Chrome, Safari) */
+.bmi-info::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bmi-info::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bmi-info::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
+.bmi-info h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #444444;
+}
+
+.bmi-info p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.health-plan {
+  margin-top: 10px;
+}
+
+.health-plan h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #444444;
+}
+
+.diet-list {
+  padding-left: 15px;
+  margin: 8px 0;
+}
+
+.diet-list li {
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #444444;
+}
+
+.skills h4 {
+  margin-top: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #444444;
+}
+
+.portfolio-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 1000px;
+}
+
+/* .navbar {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.navbar button {
+  background-color: white;
+  color: orange;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navbar button:hover {
+  background-color: #e0e0e0;
+} */
+
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  width: 80%;
+}
+
+.card {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.877);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.intro-card {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  height: 300px;
+}
+
+.skills-card {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  position: relative;
+  right: 100px;
+  top: -380px;
+  width: 600px;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.skills-card .skills {
+  padding: 10px;
+  background-color: #F0F0FF;
+  border-radius: 10px;
+  margin-top: auto;
+}
+
+.work-card {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  position: relative;
+  top: -380px;
+  width: 380px;
+  height: 300px;
+  left: 478px;
+}
+
+.card-grid {
+  grid-column: 1 / 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.image-card {
+  position: relative;
+  left: 480px;
+}
+
+.image-placeholder {
+  width: 400px;
+  height: 200px;
+  background-color: rgba(218, 216, 216, 0);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.image-card p {
   color: #444444;
 }
 
 .image-scroll {
   display: flex;
-  flex-direction: column; /* Change to column for vertical scrolling */
-  overflow-y: auto; /* Allow vertical scrolling */
-  height: 100%; /* Fit the height of the placeholder */
-  scrollbar-width: none; 
-  /* scrollbar-color: rgba(255, 255, 255, 0.5) transparent; */
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
 }
 
 /* Custom scrollbar for Chrome, Safari */
@@ -234,93 +225,263 @@ body {
   display: none;
 }
 
-/* .image-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.image-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.5); 
-  border-radius: 3px;
-} */
-
 .image-scroll img {
-  width: 100%; /* Make sure the images fit the width of the placeholder */
+  width: 100%;
   height: auto;
-  margin-bottom: 10px; /* Add some spacing between images */
+  margin-bottom: 10px;
   border-radius: 12px;
 }
 
-  
+.about-card {
+  position: relative;
+  width: 380px;
+  top: -380px;
+}
+
+.about-card p {
+  color: #444444;
+}
+
+.about-card button {
+  background-color: orange;
+  position: relative;
+  margin-top: 120px;
+}
+
+.work-card, .about-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.work-card button {
+  background-color: orange;
+  position: relative;
+  margin-top: 20px;
+}
+
+.work-card p {
+  color: #444444;
+}
+
+.icon-placeholder {
+  width: 60px;
+  height: 60px;
+  background-color: #C0B3FF;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  top: -300px;
+}
+
+.social-icons button {
+  border-radius: 50px;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 166, 0, 0.61);
+}
+
+.get-template-button {
+  position: relative;
+  top: -270px;
+}
+
+.get-template-button button {
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.get-template-button button:hover {
+  background-color: #6A47B1;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .main-content {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+  }
+
+  .intro-card {
+      grid-column: 1 / 3;
+  }
+
+  .skills-card {
+      grid-column: 1 / 2;
+      grid-row: 2 / 3;
+      right: 0;
+      top: 0;
+      width: 100%;
+      height: auto;
+  }
+
+  .work-card {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+  }
+
+  .card-grid {
+      grid-column: 1 / 3;
+      grid-template-columns: 1fr;
+      margin-top: 20px;
+  }
+
+  .image-card {
+      left: 0;
+  }
+
   .about-card {
-    position: relative;
-    width: 380px;
-    top: -380px;
+      top: 0;
+      width: 100%;
   }
 
-  .about-card p{
-    color: #444444;
-  }
-
-  .about-card button {
-    background-color: orange;
-    position: relative;
-    margin-top: 120px;
-  }
-  
-  .work-card, .about-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .work-card button{
-    background-color: orange;
-    position: relative;
-    margin-top: 20px;
-  }
-
-  .work-card p{
-    color: #444444;
-  }
-  
-  .icon-placeholder {
-    width: 60px;
-    height: 60px;
-    background-color: #C0B3FF;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  
   .social-icons {
-    position: relative;
-    display: flex;
-    gap: 10px;
-    top: -300px;
+      top: 0;
+      margin-top: 20px;
+  }
+
+  .get-template-button {
+      top: 0;
+      margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+  }
+
+  .intro-card {
+      grid-column: 1 / 2;
+  }
+
+  .skills-card {
+      grid-column: 1 / 2;
+      grid-row: 2 / 3;
+      right: 0;
+      top: 0;
+      width: 100%;
+      height: auto;
+  }
+
+  .work-card {
+      grid-column: 1 / 2;
+      grid-row: 3 / 4;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+  }
+
+  .card-grid {
+      grid-column: 1 / 2;
+      grid-template-columns: 1fr;
+  }
+
+  .image-card {
+      left: 0;
+  }
+
+  .about-card {
+      grid-column: 1 / 2;
+      grid-row: 4 / 5;
+      top: 0;
+      width: 100%;
+  }
+
+  .social-icons {
+      top: 0;
+      flex-direction: column;
+      align-items: center;
   }
 
   .social-icons button {
-    border-radius: 50px;
-    position: relative;
-    width: 100px;
-    height: 100px;
-    background-color: rgba(255, 166, 0, 0.61);
+      width: 80px;
+      height: 80px;
   }
-  
+
   .get-template-button {
-    position: relative;
-    top: -270px;
+      top: 0;
+      margin-top: 20px;
   }
-  
+
+  .orange {
+      width: 200px;
+      height: 200px;
+  }
+
+  .red {
+      width: 250px;
+      height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+      width: 90%;
+  }
+
+  .intro-card {
+      height: 200px;
+  }
+
+  .skills-card {
+      width: 100%;
+      height: auto;
+  }
+
+  .work-card {
+      width: 100%;
+      height: auto;
+  }
+
+  .about-card {
+      width: 100%;
+      height: auto;
+  }
+
+  .image-placeholder {
+      width: 100%;
+      height: 150px;
+  }
+
+  .image-scroll img {
+      margin-bottom: 5px;
+  }
+
+  .social-icons button {
+      width: 60px;
+      height: 60px;
+  }
+
   .get-template-button button {
-    background-color: orange;
-    color: white;
-    border: none;
-    padding: 10px 30px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+      padding: 8px 20px;
   }
-  
-  .get-template-button button:hover {
-    background-color: #6A47B1;
+
+  .orange {
+      width: 150px;
+      height: 150px;
   }
+
+  .red {
+      width: 200px;
+      height: 200px;
+      right: 5%;
+  }
+}

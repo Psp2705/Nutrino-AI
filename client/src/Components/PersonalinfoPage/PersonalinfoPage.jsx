@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { db } from "../../firebase"; // Ensure the correct path
+import { db } from "../../firebase"; 
 import { collection, addDoc } from "firebase/firestore";
 import "./PersonalinfoPage.css";
 import img5 from "../../assets/img5.jpg";
@@ -16,7 +16,6 @@ const PersonalinfoPage = () => {
     allergies: "",
   });
 
-  // Navigate to the main page after form submission
   const handleMainPageNavigation = () => {
     navigate("/user");
   };
@@ -26,9 +25,13 @@ const PersonalinfoPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); 
     try {
       await addDoc(collection(db, "userHistory"), formData);
+
+      // Save user data to local storage
+      localStorage.setItem("userPreferences", JSON.stringify(formData));
+      
       alert("Data submitted successfully!");
       setFormData({
         name: "",
@@ -38,7 +41,7 @@ const PersonalinfoPage = () => {
         foodPreferences: "",
         allergies: "",
       });
-      handleMainPageNavigation(); // Navigate after successful submission
+      handleMainPageNavigation();
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -47,62 +50,16 @@ const PersonalinfoPage = () => {
   return (
     <div className="form-container">
       <form className="personal-info-form" onSubmit={handleSubmit}>
-        {/* Form Left Side */}
         <div className="form-left">
           <h2>Personal Information</h2>
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="number"
-            name="age"
-            placeholder="Age"
-            value={formData.age}
-            onChange={handleChange}
-            required
-          />
-          <textarea
-            name="healthHistory"
-            placeholder="Health History"
-            value={formData.healthHistory}
-            onChange={handleChange}
-            required
-          ></textarea>
-          <textarea
-            name="foodPreferences"
-            placeholder="Food Preferences"
-            value={formData.foodPreferences}
-            onChange={handleChange}
-            required
-          ></textarea>
-          <textarea
-            name="allergies"
-            placeholder="Allergies"
-            value={formData.allergies}
-            onChange={handleChange}
-            required
-          ></textarea>
-          
-          {/* Submit Button */}
-          <button type="submit">
-            Submit
-          </button>
+          <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+          <input type="number" name="age" placeholder="Age" value={formData.age} onChange={handleChange} required />
+          <textarea name="healthHistory" placeholder="Health History" value={formData.healthHistory} onChange={handleChange} required></textarea>
+          <textarea name="foodPreferences" placeholder="Food Preferences" value={formData.foodPreferences} onChange={handleChange} required></textarea>
+          <textarea name="allergies" placeholder="Allergies" value={formData.allergies} onChange={handleChange} required></textarea>
+          <button type="submit">Submit</button>
         </div>
-
-        {/* Form Right Side */}
         <div className="form-right">
           <img src={img5} alt="Decorative" />
         </div>
