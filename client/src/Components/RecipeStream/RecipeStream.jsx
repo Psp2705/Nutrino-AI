@@ -41,6 +41,9 @@ const RecipeStream = () => {
                         onChange={(e) => setAllergies(e.target.value)}
                         className="search-input"
                     />
+                    <input type='text' placeholder='Enter Height' classname="search-input" />
+                    <input type='text' placeholder='Enter Weight' classname="search-input" />
+                    <input type='text' placeholder='Enter Activity level' classname="search-input" />
                     <button onClick={fetchRecipes} className="search-button">Search</button>
                 </div>
             </div>
