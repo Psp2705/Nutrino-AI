@@ -29,7 +29,7 @@ user_recommender = UserBasedRecommender()
 
 # Unified request model
 class RecommendationRequest(BaseModel):
-    action: str  # e.g., "recommend", "get_user_recommendations", "update_rating"
+    action: str  # e.g., "recommend", "get_user_recommendations", "update_rating", "calculate_bmi", "get_health_profile", "estimate_calories"
     ingredients: Union[List[str], None] = None
     height_cm: Union[float, None] = None
     weight_kg: Union[float, None] = None
@@ -133,6 +133,27 @@ async def unified_recommendation_endpoint(
                 timeout=5.0
             )
             response_data = {"similar_users": similar_users}
+
+        elif action == "calculate_bmi":
+            recommender = RecipeRecommender(user_id)
+            bmi = recommender.calculate_bmi()
+            response_data = {"bmi": bmi}
+
+        elif action == "get_health_profile":
+            recommender = RecipeRecommender(user_id)
+            health_status, health_tags = recommender.get_health_profile()
+            response_data = {
+                "health_status": health_status,
+                "health_tags": health_tags
+            }
+
+        elif action == "estimate_calories":
+            recommender = RecipeRecommender(user_id)
+            calories = recommender.estimate_calorie_needs()
+            response_data = {
+                "daily_calories": calories * 3,  # Convert per-meal to daily
+                "per_meal_calories": calories
+            }
 
         else:
             raise HTTPException(status_code=400, detail="Invalid action specified")

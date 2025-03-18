@@ -26,8 +26,10 @@ const Login = () => {
     if (newUser) {
       // Create user
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userDetails) => {
+        .then(async (userDetails) => {
           console.log(userDetails);
+          const idToken = await userDetails.user.getIdToken();
+          localStorage.setItem("firebaseToken", idToken);
           localStorage.setItem("username", username);
           navigate("/personalinfopage"); // Redirect to personal info page after successful sign-up
         })
@@ -38,9 +40,11 @@ const Login = () => {
     } else {
       // Sign in user
       signInWithEmailAndPassword(auth, email, password)
-        .then((userDetails) => {
+        .then(async (userDetails) => {
           console.log(userDetails);
           // Redirect to personal info page or dashboard if needed
+          const idToken = await userDetails.user.getIdToken();
+          localStorage.setItem("firebaseToken", idToken);
           navigate("/personalinfopage"); // Redirect after successful login
         })
         .catch((error) => {
@@ -52,8 +56,10 @@ const Login = () => {
 
   const handleClick = () => {
     signInWithPopup(auth, provider)
-      .then((data) => {
+      .then(async (data) => {
         console.log(data);
+        const idToken = await data.user.getIdToken();
+        localStorage.setItem("firebaseToken", idToken);
         localStorage.setItem("email", data.user.email);
         navigate("/personalinfopage"); // Redirect after Google Sign-In
       })
