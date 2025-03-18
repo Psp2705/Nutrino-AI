@@ -14,9 +14,10 @@ import BmiCalculator from "./Components/BmiCalculator/BmiCalculator";
 import Chatbot from "./Components/Chatbot/chatbot";
 import User from "./Components/User/User";
 // import RecipeReels from "./Components/RecipeReels/RecipeReels";
-// import FavoriteRecipes from "./Components/FavoriteRecipes/FavoriteRecipes";
+import FavoriteRecipes from "./Components/FavoriteRecipes/FavoriteRecipes";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './App.css';
+import RecipeGeneration from "./Components/RecipeGenerate/RecipeGeneration";
 
 const App = () => {
   let heroData = [
@@ -79,7 +80,8 @@ const App = () => {
           <Route path="/bmicalculator" element={<BmiCalculator />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/user" element={<User userName={userName} />} />
-          {/* <Route path="/favorites" element={<FavoriteRecipes />} /> */}
+          <Route path="/favorite-recipes" element={<FavoriteRecipes />} />
+          <Route path="/generate-recipes" element={<RecipeGeneration />} />
         </Routes>
       </div>
     </Router>

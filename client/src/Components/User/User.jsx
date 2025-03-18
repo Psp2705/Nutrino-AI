@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import './User.css';
+import { useNavigate } from 'react-router-dom';
 
 const User = ({ userName, userEmail }) => {
   const [userPreference, setUserPreference] = useState('');
   const [loading, setLoading] = useState(true);
   const [bmiData, setBmiData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch BMI data from local storage
@@ -58,6 +60,14 @@ const User = ({ userName, userEmail }) => {
     return date.toLocaleDateString();
   };
 
+  const handleGenerateRecipes = () => {
+    navigate('/recipes'); // Navigate to recipes page
+  };
+
+  const handleFavoriteRecipes = () => {
+    navigate('/favorite-recipes'); // Navigate to favorite recipes page
+  };
+
   return (
     <div className="portfolio-container">
       <nav className="navbar">
@@ -107,13 +117,13 @@ const User = ({ userName, userEmail }) => {
         <div className="card-grid">
           <div className="card work-card">
             <div className="icon-placeholder"></div>
-            <h2>My works</h2>
-            <p>EXPLORE</p>
+            <h2>My Recipes</h2>
+            <button onClick={handleGenerateRecipes}>Generate Recipes</button>
           </div>
           <div className="card about-card">
             <div className="icon-placeholder"></div>
-            <h2>About me</h2>
-            <p>EXPLORE</p>
+            <h2>Favorite Recipes</h2>
+            <p onClick={handleFavoriteRecipes}>VIEW FAVORITES</p>
           </div>
         </div>
       </div>
