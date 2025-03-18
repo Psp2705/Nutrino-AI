@@ -32,14 +32,30 @@ const User = ({ userName, userEmail }) => {
           return;
         }
 
+        console.log('Making health data request with:', {
+          userId,
+          tokenExists: !!token,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
         // Fetch BMI
         const bmiResponse = await axios.post('http://localhost:8081/api/v1/recommendation', 
           { 
             action: 'calculate_bmi',
             user_id: userId
           },
-          { headers: { 'Authorization': `Bearer ${token}` } }
+          { 
+            headers: { 
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            } 
+          }
         );
+        
+        console.log('BMI Response:', bmiResponse.data);
         
         // Fetch Health Profile
         const healthProfileResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
@@ -210,11 +226,7 @@ const User = ({ userName, userEmail }) => {
       <div className="similar-users-section">
         <h2>Similar Users</h2>
         <div className="similar-users-grid">
-          {loading ? (
-            <p>Loading similar users...</p>
-          ) : (
-            <SimilarUsers />
-          )}
+          <SimilarUsers />
         </div>
       </div>
 
@@ -229,19 +241,27 @@ const User = ({ userName, userEmail }) => {
 const SimilarUsers = () => {
   const [similarUsers, setSimilarUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchSimilarUsers = async () => {
+      setIsLoading(true);
       try {
         const token = localStorage.getItem('firebaseToken');
         const userId = localStorage.getItem('userId');
         
         if (!token || !userId) {
           setError('Please log in to view similar users');
+          setIsLoading(false);
           return;
         }
 
-        const response = await axios.get('http://localhost:8081/api/v1/recommendation',
+        console.log('Making similar users request with:', {
+          userId,
+          tokenExists: !!token
+        });
+
+        const response = await axios.post('http://localhost:8081/api/v1/recommendation', 
           {
             action: 'get_similar_users',
             user_id: userId,
@@ -255,53 +275,55 @@ const SimilarUsers = () => {
           }
         );
 
+        console.log('Similar Users Response:', response.data);
+
         if (response.data?.data?.similar_users) {
           setSimilarUsers(response.data.data.similar_users);
+        } else {
+          console.error('Unexpected response format:', response.data);
+          setError('Invalid response format from server');
         }
       } catch (error) {
-        console.error('Error fetching similar users:', error);
-        setError('Failed to load similar users');
+        console.error('Error fetching similar users. Details:', {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          error: error.message
+        });
+        
+        // If we have detailed error information from the server, display it
+        const errorMessage = error.response?.data?.message || error.response?.data || error.message;
+        setError(`Server Error: ${errorMessage}`);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchSimilarUsers();
   }, []);
 
+  if (isLoading) {
+    return <p className="loading-message">Loading similar users...</p>;
+  }
+
   if (error) {
     return <p className="error-message">{error}</p>;
   }
 
-  return (
+  return similarUsers.length === 0 ? (
+    <p className="no-users-message">No similar users found</p>
+  ) : (
     <div className="similar-users-grid">
       {similarUsers.map((user, index) => (
         <div key={index} className="similar-user-card">
           <div className="user-avatar">
-            {user.name ? user.name[0].toUpperCase() : '?'}
+            {user[0] ? user[0][0].toUpperCase() : '?'}
           </div>
           <div className="user-info">
-            <h3>{user.name || 'Anonymous User'}</h3>
+            <h3>{user[0] || 'Anonymous User'}</h3>
             <div className="similarity-score">
-              <span>Similarity Score:</span>
-              <div className="score-bar">
-                <div 
-                  className="score-fill" 
-                  style={{ width: `${(user.similarity_score * 100).toFixed(0)}%` }}
-                ></div>
-              </div>
-              <span className="score-percentage">
-                {(user.similarity_score * 100).toFixed(0)}%
-              </span>
+              <span>Similarity Score: {(user[1] * 100).toFixed(2)}%</span>
             </div>
-            {user.shared_preferences && (
-              <div className="shared-preferences">
-                <h4>Shared Preferences:</h4>
-                <div className="preference-tags">
-                  {user.shared_preferences.map((pref, i) => (
-                    <span key={i} className="preference-tag">{pref}</span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       ))}
