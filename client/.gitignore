@@ -26,7 +26,8 @@ dist-ssr
 # Ignore Firebase Service Account JSON file
 serviceAccountkey.json
 
-
+firebase.js
 .env
-
+serviceAccountkey.json
+get_token.html
 
