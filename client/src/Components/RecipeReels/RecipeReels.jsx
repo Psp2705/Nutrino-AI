@@ -145,9 +145,29 @@ const RecipeReels = () => {
 
   const handleLike = (recipe) => {
     const savedRecipes = JSON.parse(localStorage.getItem("favoriteRecipes")) || [];
-    savedRecipes.push(recipe);
-    localStorage.setItem("favoriteRecipes", JSON.stringify(savedRecipes));
-    alert(`${recipe.title} added to favorites!`);
+    // Check if recipe already exists in favorites
+    const isAlreadyFavorite = savedRecipes.some(saved => saved.recipe_id === recipe.recipe_id);
+    
+    if (!isAlreadyFavorite) {
+      // Format recipe data for storage, ensuring all required fields exist
+      const recipeToSave = {
+        recipe_id: recipe.recipe_id || `recipe-${Date.now()}`,
+        name: recipe.title || 'Untitled Recipe',
+        ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
+        steps: Array.isArray(recipe.instructions) ? recipe.instructions : [],
+        nutrition: recipe.nutrition || {},
+        tags: Array.isArray(recipe.tags) ? recipe.tags : [],
+        reason: recipe.reason || '',
+        recommendation_score: recipe.recommendation_score || 0,
+        timestamp: new Date().toISOString()
+      };
+      
+      savedRecipes.push(recipeToSave);
+      localStorage.setItem("favoriteRecipes", JSON.stringify(savedRecipes));
+      alert(`${recipe.title} added to favorites!`);
+    } else {
+      alert(`${recipe.title} is already in your favorites!`);
+    }
   };
 
   if (loading) {
