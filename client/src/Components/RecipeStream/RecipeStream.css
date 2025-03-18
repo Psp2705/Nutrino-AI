@@ -124,3 +124,91 @@ li {
   margin-bottom: 5px;
   color: rgb(190, 187, 187);
 }
+
+.error-message {
+    color: #dc3545;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f8d7da;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.recommendation-reason {
+    margin: 10px 0;
+    padding: 8px;
+    background-color: #e8f4f8;
+    border-radius: 4px;
+}
+
+.recommendation-score {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 4px 8px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.search-input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.recipe-section {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.recipe-id {
+    color: #888;
+    font-size: 0.9em;
+    margin: 5px 0;
+}
+
+.nutrition-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.nutrition-list li {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px 10px;
+    background-color: rgba(255, 165, 0, 0.1);
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.recipe-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.tag {
+    background-color: rgba(255, 165, 0, 0.3);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+ol {
+    padding-left: 20px;
+    margin: 0;
+}
+
+ol li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+    color: rgb(190, 187, 187);
+}

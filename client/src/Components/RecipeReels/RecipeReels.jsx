@@ -12,37 +12,136 @@ const RecipeReels = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
+        // Get auth data and log for debugging
         const token = localStorage.getItem('firebaseToken');
-        const userId = localStorage.getItem('userId');
+        let userId = localStorage.getItem('userId');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        // Try to get userId from user object if not directly stored
+        if (!userId && user) {
+          userId = user.uid || user.id || user.userId;
+          if (userId) {
+            localStorage.setItem('userId', userId);
+          }
+        }
+
+        console.log('Auth Debug:', { 
+          hasToken: !!token, 
+          hasUserId: !!userId,
+          token: token,
+          userId: userId,
+          user: user
+        });
         
         if (!token || !userId) {
-          setError('Please log in to view recipes');
-          setLoading(false);
+          console.log('Missing auth credentials. Token:', token, 'UserId:', userId);
+          setError('Please log in to continue. Redirecting...');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
           return;
         }
 
-        const response = await axios.post('http://localhost:8081/api/v1/recommendation',
+        setLoading(true);
+        setError(null);
+
+        // Fetch recipes directly without auth test
+        const recipesResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
           {
             action: 'get_user_recommendations',
             user_id: userId,
             limit: 10
           },
           {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            timeout: 30000 // 30 second timeout
           }
         );
 
-        setRecipes(response.data.data.recommendations);
-        setLoading(false);
+        // Log the entire response for debugging
+        console.log('Raw API Response:', recipesResponse);
+        console.log('Response Status:', recipesResponse.status);
+        console.log('Response Data:', recipesResponse.data);
+        
+        // Check if we have any data at all
+        if (!recipesResponse.data) {
+          setError('No data received from server');
+          setLoading(false);
+          return;
+        }
+
+        // Try to find recipes in the response
+        let recipeData = null;
+        
+        if (Array.isArray(recipesResponse.data)) {
+          // If the response is directly an array of recipes
+          recipeData = recipesResponse.data;
+        } else if (recipesResponse.data.recommendations) {
+          // If recipes are in a recommendations field
+          recipeData = recipesResponse.data.recommendations;
+        } else if (recipesResponse.data.data?.recommendations) {
+          // If recipes are nested in data.recommendations
+          recipeData = recipesResponse.data.data.recommendations;
+        } else if (typeof recipesResponse.data === 'object') {
+          // Log all available keys in the response
+          console.log('Available keys in response:', Object.keys(recipesResponse.data));
+          
+          // Try to find an array that looks like recipes
+          const arrayFields = Object.entries(recipesResponse.data)
+            .filter(([, value]) => Array.isArray(value));
+          
+          console.log('Array fields found:', arrayFields.map(([key]) => key));
+          
+          if (arrayFields.length > 0) {
+            // Use the first array found that has recipe-like objects
+            recipeData = arrayFields.find(([, value]) => 
+              value.length > 0 && (
+                value[0].recipe_id || 
+                value[0].title ||
+                value[0].ingredients
+              )
+            )?.[1];
+          }
+        }
+
+        if (recipeData && Array.isArray(recipeData)) {
+          console.log('Found recipe data:', recipeData);
+          setRecipes(recipeData);
+          setLoading(false);
+        } else {
+          console.error('Could not find recipe data in response. Full response:', recipesResponse.data);
+          setError('Unexpected response format from server');
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('Error fetching recipes:', error);
-        setError('Failed to load recipes. Please try again later.');
+        console.error('Error in recipe fetch:', error);
+        
+        if (error.response?.status === 401) {
+          localStorage.removeItem('firebaseToken');
+          localStorage.removeItem('userId');
+          setError('Session expired. Please log in again.');
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        } else if (error.response?.status === 503 || error.message?.includes('timeout')) {
+          setError('The recipe service is temporarily unavailable. This might be due to high demand. Please try again in a few minutes.');
+        } else if (error.message?.includes('failed to connect')) {
+          setError('Unable to connect to the recipe service. Please check your internet connection and try again.');
+        } else {
+          setError(
+            error.response?.data?.detail || 
+            'Failed to load recipes. Please try again later.'
+          );
+        }
         setLoading(false);
       }
     };
 
     fetchRecipes();
-  }, []);
+  }, [navigate]);
 
   const handleLike = (recipe) => {
     const savedRecipes = JSON.parse(localStorage.getItem("favoriteRecipes")) || [];
@@ -75,20 +174,43 @@ const RecipeReels = () => {
     <div className="recipe-reels">
       <div className="recipeblur-circle orange"></div>
       <div className="recipeblur-circle red"></div>
-      {recipes.map(recipe => (
+      {recipes && recipes.map(recipe => (
         <div key={recipe.recipe_id} className="recipe-card">
           <h3>{recipe.title}</h3>
           <div>
             <strong>Ingredients:</strong>
             <ul>
-              {recipe.ingredients.map((item, index) => <li key={index}>{item}</li>)}
+              {Array.isArray(recipe.ingredients) ? 
+                recipe.ingredients.map((item, index) => <li key={index}>{item}</li>) :
+                <li>No ingredients available</li>
+              }
             </ul>
           </div>
           <div>
-            <strong>Instructions:</strong>
-            <ul>
-              {recipe.instructions.map((step, index) => <li key={index}>{step}</li>)}
-            </ul>
+            <strong>Why Recommended:</strong>
+            <p>{recipe.reason || 'No reason provided'}</p>
+            <p className="recommendation-score">
+              <strong>Match Score:</strong> {(recipe.recommendation_score * 100).toFixed(0)}%
+            </p>
+          </div>
+          <div>
+            <strong>Nutrition:</strong>
+            {recipe.nutrition && (
+              <ul>
+                <li>Calories: {recipe.nutrition.calories} kcal</li>
+                <li>Protein: {recipe.nutrition.protein}g</li>
+                <li>Carbs: {recipe.nutrition.carbs}g</li>
+                <li>Fat: {recipe.nutrition.fat}g</li>
+              </ul>
+            )}
+          </div>
+          <div>
+            <strong>Tags:</strong>
+            <div className="recipe-tags">
+              {Array.isArray(recipe.tags) && recipe.tags.map((tag, index) => (
+                <span key={index} className="tag">{tag}</span>
+              ))}
+            </div>
           </div>
           <div className="like-icon" onClick={() => handleLike(recipe)}>❤️</div>
         </div>

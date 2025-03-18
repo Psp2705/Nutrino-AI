@@ -324,3 +324,118 @@ body {
   .get-template-button button:hover {
     background-color: #6A47B1;
   }
+
+.similar-users-section {
+  margin: 2rem 0;
+  padding: 1rem;
+}
+
+.similar-users-section h2 {
+  color: orange;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.similar-users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.similar-user-card {
+  background: rgba(255, 165, 0, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.similar-user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background: orange;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-info h3 {
+  color: orange;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.similarity-score {
+  margin: 1rem 0;
+}
+
+.score-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  background: orange;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.score-percentage {
+  color: orange;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.shared-preferences {
+  margin-top: 1rem;
+}
+
+.shared-preferences h4 {
+  color: orange;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.preference-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.preference-tag {
+  background: rgba(255, 165, 0, 0.2);
+  color: orange;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(220, 53, 69, 0.1);
+  border-radius: 8px;
+  margin: 1rem 0;
+}

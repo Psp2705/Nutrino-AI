@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { db } from '../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
@@ -208,16 +207,104 @@ const User = ({ userName, userEmail }) => {
         </div>
       </div>
 
-      <div className="social-icons">
-        <button>User1</button>
-        <button>User2</button>
-        <button>User3</button>
-        <button>User4</button>
+      <div className="similar-users-section">
+        <h2>Similar Users</h2>
+        <div className="similar-users-grid">
+          {loading ? (
+            <p>Loading similar users...</p>
+          ) : (
+            <SimilarUsers />
+          )}
+        </div>
       </div>
 
       <div className="get-template-button">
         <button onClick={() => navigate("/frhero")}>Home</button>
       </div>
+    </div>
+  );
+};
+
+// Similar Users Component
+const SimilarUsers = () => {
+  const [similarUsers, setSimilarUsers] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSimilarUsers = async () => {
+      try {
+        const token = localStorage.getItem('firebaseToken');
+        const userId = localStorage.getItem('userId');
+        
+        if (!token || !userId) {
+          setError('Please log in to view similar users');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:8081/api/v1/recommendation',
+          {
+            action: 'get_similar_users',
+            user_id: userId,
+            limit: 4
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        if (response.data?.data?.similar_users) {
+          setSimilarUsers(response.data.data.similar_users);
+        }
+      } catch (error) {
+        console.error('Error fetching similar users:', error);
+        setError('Failed to load similar users');
+      }
+    };
+
+    fetchSimilarUsers();
+  }, []);
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
+  return (
+    <div className="similar-users-grid">
+      {similarUsers.map((user, index) => (
+        <div key={index} className="similar-user-card">
+          <div className="user-avatar">
+            {user.name ? user.name[0].toUpperCase() : '?'}
+          </div>
+          <div className="user-info">
+            <h3>{user.name || 'Anonymous User'}</h3>
+            <div className="similarity-score">
+              <span>Similarity Score:</span>
+              <div className="score-bar">
+                <div 
+                  className="score-fill" 
+                  style={{ width: `${(user.similarity_score * 100).toFixed(0)}%` }}
+                ></div>
+              </div>
+              <span className="score-percentage">
+                {(user.similarity_score * 100).toFixed(0)}%
+              </span>
+            </div>
+            {user.shared_preferences && (
+              <div className="shared-preferences">
+                <h4>Shared Preferences:</h4>
+                <div className="preference-tags">
+                  {user.shared_preferences.map((pref, i) => (
+                    <span key={i} className="preference-tag">{pref}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
