@@ -4,18 +4,39 @@ import './RecipeStream.css'; // Ensure this file is updated with the new CSS
 
 const RecipeStream = () => {
     const [preferredIngredients, setPreferredIngredients] = useState('');
-    const [allergies, setAllergies] = useState('');
+    const [height, setHeight] = useState('');
+    const [weight, setWeight] = useState('');
+    const [activityLevel, setActivityLevel] = useState('');
     const [recipes, setRecipes] = useState([]);
+    const [error, setError] = useState('');
 
     const fetchRecipes = async () => {
         try {
-            const response = await axios.post('https://nutri-ai-server.iamaan1410.workers.dev', {
-                preferredIngredients: preferredIngredients.split(',').map(ing => ing.trim()),
-                allergies: allergies.split(',').map(all => all.trim())
+            const token = localStorage.getItem('firebaseToken');
+            if (!token) {
+                setError('Please log in to continue');
+                return;
+            }
+
+            const response = await axios.post('http://localhost:8081/api/v1/recommendation', {
+                action: 'recommend',
+                ingredients: preferredIngredients.split(',').map(ing => ing.trim()),
+                height_cm: parseFloat(height),
+                weight_kg: parseFloat(weight),
+                activity_level: parseFloat(activityLevel),
+                limit: 10
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
             });
-            setRecipes(response.data.recipes);
+
+            setRecipes(response.data.data.recipes);
+            setError('');
         } catch (error) {
             console.error('Error fetching recipes:', error);
+            setError(error.response?.data?.detail || 'Failed to fetch recipes');
         }
     };
 
@@ -34,33 +55,100 @@ const RecipeStream = () => {
                         onChange={(e) => setPreferredIngredients(e.target.value)}
                         className="search-input"
                     />
-                    <input
-                        type="text"
-                        placeholder="Enter allergies (comma-separated)..."
-                        value={allergies}
-                        onChange={(e) => setAllergies(e.target.value)}
-                        className="search-input"
+                    <input 
+                        type="number" 
+                        placeholder="Enter Height (cm)" 
+                        value={height}
+                        onChange={(e) => setHeight(e.target.value)}
+                        className="search-input" 
                     />
-                    <input type='text' placeholder='Enter Height' classname="search-input" />
-                    <input type='text' placeholder='Enter Weight' classname="search-input" />
-                    <input type='text' placeholder='Enter Activity level' classname="search-input" />
+                    <input 
+                        type="number" 
+                        placeholder="Enter Weight (kg)" 
+                        value={weight}
+                        onChange={(e) => setWeight(e.target.value)}
+                        className="search-input" 
+                    />
+                    <input 
+                        type="number" 
+                        placeholder="Enter Activity level (1-5)" 
+                        value={activityLevel}
+                        onChange={(e) => setActivityLevel(e.target.value)}
+                        min="1"
+                        max="5"
+                        className="search-input" 
+                    />
                     <button onClick={fetchRecipes} className="search-button">Search</button>
                 </div>
+                {error && <p className="error-message">{error}</p>}
             </div>
             <div className="right-side">
                 <div className="recipe-list">
                     {recipes.map((recipe, index) => (
-
-                        
                         <div key={index} className="recipe-card">
                             <h3>{recipe.title}</h3>
-                            <img src={recipe.image} alt={recipe.title} className="recipe-image" />
-                            <h4>Ingredients:</h4>
-                            <ul>
-                                {recipe.ingredients.map((ingredient, i) => (
-                                    <li key={i}>{ingredient}</li>
-                                ))}
-                            </ul>
+                            <p className="recipe-id">Recipe ID: {recipe.recipe_id}</p>
+                            
+                            <div className="recipe-section">
+                                <h4>Ingredients:</h4>
+                                <ul>
+                                    {Array.isArray(recipe.ingredients) ? 
+                                        recipe.ingredients.map((ingredient, i) => (
+                                            <li key={i}>{ingredient}</li>
+                                        )) : 
+                                        <li>No ingredients available</li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div className="recipe-section">
+                                <h4>Instructions:</h4>
+                                <ol>
+                                    {Array.isArray(recipe.instructions) ? 
+                                        recipe.instructions.map((step, i) => (
+                                            <li key={i}>{step}</li>
+                                        )) : 
+                                        <li>No instructions available</li>
+                                    }
+                                </ol>
+                            </div>
+
+                            <div className="recipe-section">
+                                <h4>Nutrition Information:</h4>
+                                {recipe.nutrition ? (
+                                    <ul className="nutrition-list">
+                                        <li>Calories: {recipe.nutrition.calories || 'N/A'} kcal</li>
+                                        <li>Protein: {recipe.nutrition.protein || 'N/A'} g</li>
+                                        <li>Carbs: {recipe.nutrition.carbs || 'N/A'} g</li>
+                                        <li>Fat: {recipe.nutrition.fat || 'N/A'} g</li>
+                                    </ul>
+                                ) : (
+                                    <p>No nutrition information available</p>
+                                )}
+                            </div>
+
+                            <div className="recipe-section">
+                                <h4>Tags:</h4>
+                                <div className="recipe-tags">
+                                    {Array.isArray(recipe.tags) && recipe.tags.length > 0 ? 
+                                        recipe.tags.map((tag, i) => (
+                                            <span key={i} className="tag">{tag}</span>
+                                        )) : 
+                                        <p>No tags available</p>
+                                    }
+                                </div>
+                            </div>
+
+                            {/* {recipe.reason && (
+                                <p className="recommendation-reason">
+                                    <strong>Why Recommended:</strong> {recipe.reason}
+                                </p>
+                            )} */}
+                            {/* {recipe.recommendation_score && (
+                                <p className="recommendation-score">
+                                    <strong>Match Score:</strong> {(recipe.recommendation_score * 100).toFixed(0)}%
+                                </p>
+                            )} */}
                         </div>
                     ))}
                 </div>

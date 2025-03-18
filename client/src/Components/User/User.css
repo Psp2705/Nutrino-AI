@@ -6,6 +6,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
+
 .blur-circle {
   position: absolute;
   border-radius: 50%;
@@ -38,10 +39,10 @@ body {
   padding: 15px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  max-height: 165px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+  max-height: 165px;  /* Limit height to ensure it fits in the card */
+  overflow-y: auto;   /* Add vertical scrolling */
+  scrollbar-width: thin;  /* For Firefox */
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;  /* For Firefox */
 }
 
 /* Custom scrollbar styling for WebKit browsers (Chrome, Safari) */
@@ -61,41 +62,41 @@ body {
 .bmi-info h3 {
   margin-top: 0;
   margin-bottom: 12px;
-  font-size: 16px;
+  font-size: 16px;  /* Slightly smaller font size */
   color: #444444;
 }
 
 .bmi-info p {
-  margin: 6px 0;
-  font-size: 14px;
+  margin: 6px 0;  /* Reduced margin */
+  font-size: 14px;  /* Smaller font size */
 }
 
 .health-plan {
-  margin-top: 10px;
+  margin-top: 10px;  /* Reduced margin */
 }
 
 .health-plan h4 {
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 14px;  /* Smaller font size */
   color: #444444;
 }
 
 .diet-list {
-  padding-left: 15px;
+  padding-left: 15px;  /* Reduced padding */
   margin: 8px 0;
 }
 
 .diet-list li {
-  margin-bottom: 6px;
-  font-size: 12px;
-  line-height: 1.3;
+  margin-bottom: 6px;  /* Reduced margin */
+  font-size: 12px;  /* Smaller font size */
+  line-height: 1.3;  /* Reduced line height */
   color: #444444;
 }
 
 .skills h4 {
-  margin-top: 10px;
+  margin-top: 10px;  /* Reduced margin */
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 14px;  /* Smaller font size */
   color: #444444;
 }
 
@@ -164,7 +165,7 @@ body {
   top: -380px;
   width: 600px;
   height: 300px;
-  overflow: hidden;
+  overflow: hidden;  /* Hide any overflow */
   display: flex;
   flex-direction: column;
 }
@@ -173,7 +174,7 @@ body {
   padding: 10px;
   background-color: #F0F0FF;
   border-radius: 10px;
-  margin-top: auto;
+  margin-top: auto;  /* Push to bottom of container */
 }
 
 .work-card {
@@ -199,6 +200,13 @@ body {
   left: 480px;
 }
 
+/* .image-card .image-placeholder {
+  width: 400px;
+  height: 200px;
+  background-color: #C0B3FF;
+  border-radius: 12px;
+} */
+
 .image-placeholder {
   width: 400px;
   height: 200px;
@@ -208,29 +216,40 @@ body {
   position: relative;
 }
 
-.image-card p {
-  color: #444444;
+.image-card p{
+color: #444444;
 }
 
 .image-scroll {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  height: 100%;
-  scrollbar-width: none;
+display: flex;
+flex-direction: column; /* Change to column for vertical scrolling */
+overflow-y: auto; /* Allow vertical scrolling */
+height: 100%; /* Fit the height of the placeholder */
+scrollbar-width: none; 
+/* scrollbar-color: rgba(255, 255, 255, 0.5) transparent; */
 }
 
 /* Custom scrollbar for Chrome, Safari */
 .image-scroll::-webkit-scrollbar {
-  display: none;
+display: none;
 }
 
-.image-scroll img {
-  width: 100%;
-  height: auto;
-  margin-bottom: 10px;
-  border-radius: 12px;
+/* .image-scroll::-webkit-scrollbar-track {
+background: transparent;
 }
+
+.image-scroll::-webkit-scrollbar-thumb {
+background-color: rgba(0, 0, 0, 0.5); 
+border-radius: 3px;
+} */
+
+.image-scroll img {
+width: 100%; /* Make sure the images fit the width of the placeholder */
+height: auto;
+margin-bottom: 10px; /* Add some spacing between images */
+border-radius: 12px;
+}
+
 
 .about-card {
   position: relative;
@@ -238,7 +257,7 @@ body {
   top: -380px;
 }
 
-.about-card p {
+.about-card p{
   color: #444444;
 }
 
@@ -254,13 +273,13 @@ body {
   align-items: center;
 }
 
-.work-card button {
+.work-card button{
   background-color: orange;
   position: relative;
   margin-top: 20px;
 }
 
-.work-card p {
+.work-card p{
   color: #444444;
 }
 
@@ -306,182 +325,117 @@ body {
   background-color: #6A47B1;
 }
 
-/* Responsive Media Queries */
-@media (max-width: 1024px) {
-  .main-content {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
-  }
-
-  .intro-card {
-      grid-column: 1 / 3;
-  }
-
-  .skills-card {
-      grid-column: 1 / 2;
-      grid-row: 2 / 3;
-      right: 0;
-      top: 0;
-      width: 100%;
-      height: auto;
-  }
-
-  .work-card {
-      grid-column: 2 / 3;
-      grid-row: 2 / 3;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-  }
-
-  .card-grid {
-      grid-column: 1 / 3;
-      grid-template-columns: 1fr;
-      margin-top: 20px;
-  }
-
-  .image-card {
-      left: 0;
-  }
-
-  .about-card {
-      top: 0;
-      width: 100%;
-  }
-
-  .social-icons {
-      top: 0;
-      margin-top: 20px;
-  }
-
-  .get-template-button {
-      top: 0;
-      margin-top: 20px;
-  }
+.similar-users-section {
+margin: 2rem 0;
+padding: 1rem;
 }
 
-@media (max-width: 768px) {
-  .main-content {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto;
-  }
-
-  .intro-card {
-      grid-column: 1 / 2;
-  }
-
-  .skills-card {
-      grid-column: 1 / 2;
-      grid-row: 2 / 3;
-      right: 0;
-      top: 0;
-      width: 100%;
-      height: auto;
-  }
-
-  .work-card {
-      grid-column: 1 / 2;
-      grid-row: 3 / 4;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-  }
-
-  .card-grid {
-      grid-column: 1 / 2;
-      grid-template-columns: 1fr;
-  }
-
-  .image-card {
-      left: 0;
-  }
-
-  .about-card {
-      grid-column: 1 / 2;
-      grid-row: 4 / 5;
-      top: 0;
-      width: 100%;
-  }
-
-  .social-icons {
-      top: 0;
-      flex-direction: column;
-      align-items: center;
-  }
-
-  .social-icons button {
-      width: 80px;
-      height: 80px;
-  }
-
-  .get-template-button {
-      top: 0;
-      margin-top: 20px;
-  }
-
-  .orange {
-      width: 200px;
-      height: 200px;
-  }
-
-  .red {
-      width: 250px;
-      height: 250px;
-  }
+.similar-users-section h2 {
+color: orange;
+text-align: center;
+margin-bottom: 1.5rem;
 }
 
-@media (max-width: 480px) {
-  .main-content {
-      width: 90%;
-  }
+.similar-users-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 1.5rem;
+padding: 1rem;
+}
 
-  .intro-card {
-      height: 200px;
-  }
+.similar-user-card {
+background: rgba(255, 165, 0, 0.1);
+border-radius: 12px;
+padding: 1.5rem;
+display: flex;
+align-items: flex-start;
+gap: 1rem;
+transition: transform 0.3s ease;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-  .skills-card {
-      width: 100%;
-      height: auto;
-  }
+.similar-user-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
 
-  .work-card {
-      width: 100%;
-      height: auto;
-  }
+.user-avatar {
+width: 50px;
+height: 50px;
+background: orange;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+color: white;
+font-weight: bold;
+}
 
-  .about-card {
-      width: 100%;
-      height: auto;
-  }
+.user-info {
+flex: 1;
+}
 
-  .image-placeholder {
-      width: 100%;
-      height: 150px;
-  }
+.user-info h3 {
+color: orange;
+margin: 0 0 1rem 0;
+font-size: 1.2rem;
+}
 
-  .image-scroll img {
-      margin-bottom: 5px;
-  }
+.similarity-score {
+margin: 1rem 0;
+}
 
-  .social-icons button {
-      width: 60px;
-      height: 60px;
-  }
+.score-bar {
+height: 8px;
+background: rgba(255, 255, 255, 0.2);
+border-radius: 4px;
+margin: 0.5rem 0;
+overflow: hidden;
+}
 
-  .get-template-button button {
-      padding: 8px 20px;
-  }
+.score-fill {
+height: 100%;
+background: orange;
+border-radius: 4px;
+transition: width 0.3s ease;
+}
 
-  .orange {
-      width: 150px;
-      height: 150px;
-  }
+.score-percentage {
+color: orange;
+font-weight: bold;
+font-size: 0.9rem;
+}
 
-  .red {
-      width: 200px;
-      height: 200px;
-      right: 5%;
-  }
+.shared-preferences {
+margin-top: 1rem;
+}
+
+.shared-preferences h4 {
+color: orange;
+margin: 0 0 0.5rem 0;
+font-size: 1rem;
+}
+
+.preference-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+}
+
+.preference-tag {
+background: rgba(255, 165, 0, 0.2);
+color: orange;
+padding: 0.25rem 0.75rem;
+border-radius: 15px;
+font-size: 0.8rem;
+}
+
+.error-message {
+color: #dc3545;
+text-align: center;
+padding: 1rem;
+background: rgba(220, 53, 69, 0.1);
+border-radius: 8px;
+margin: 1rem 0;
 }

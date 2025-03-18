@@ -19,6 +19,17 @@ const Login = () => {
 
   const navigate = useNavigate(); // Initialize useNavigate
 
+  const storeUserData = async (user) => {
+    const idToken = await user.getIdToken();
+    localStorage.setItem("firebaseToken", idToken);
+    localStorage.setItem("userId", user.uid);
+    localStorage.setItem("user", JSON.stringify({
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || username
+    }));
+  };
+
   const submit = (e) => {
     e.preventDefault();
     setError(false);
@@ -28,9 +39,7 @@ const Login = () => {
       createUserWithEmailAndPassword(auth, email, password)
         .then(async (userDetails) => {
           console.log(userDetails);
-          const idToken = await userDetails.user.getIdToken();
-          localStorage.setItem("firebaseToken", idToken);
-          localStorage.setItem("username", username);
+          await storeUserData(userDetails.user);
           navigate("/personalinfopage"); // Redirect to personal info page after successful sign-up
         })
         .catch((error) => {
@@ -42,9 +51,7 @@ const Login = () => {
       signInWithEmailAndPassword(auth, email, password)
         .then(async (userDetails) => {
           console.log(userDetails);
-          // Redirect to personal info page or dashboard if needed
-          const idToken = await userDetails.user.getIdToken();
-          localStorage.setItem("firebaseToken", idToken);
+          await storeUserData(userDetails.user);
           navigate("/personalinfopage"); // Redirect after successful login
         })
         .catch((error) => {
@@ -58,9 +65,7 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then(async (data) => {
         console.log(data);
-        const idToken = await data.user.getIdToken();
-        localStorage.setItem("firebaseToken", idToken);
-        localStorage.setItem("email", data.user.email);
+        await storeUserData(data.user);
         navigate("/personalinfopage"); // Redirect after Google Sign-In
       })
       .catch((error) => {
@@ -137,7 +142,7 @@ const Login = () => {
             </span>
           ) : (
             <span className="user-stat">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <b
                 onClick={() => {
                   setNewUser(true);
