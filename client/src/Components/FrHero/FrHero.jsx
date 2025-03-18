@@ -22,7 +22,7 @@ const FrHero = () => {
     navigate("/login");
   };
   const handlechatbot = () => {
-    navigate("/chatbot");
+    navigate("/user");
   };
   useEffect(() => {
     // Check if the current page is /frhero
