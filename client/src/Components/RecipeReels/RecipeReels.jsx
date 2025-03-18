@@ -1,45 +1,83 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './RecipeReels.css';
 import { useNavigate } from 'react-router-dom';
-
-const recipes = [
-  {
-    id: 1,
-    name: "Grilled Chicken Salad",
-    ingredients: ["Chicken Breast", "Lettuce", "Avocado", "Olive Oil", "Lemon"],
-    steps: ["Grill the chicken.", "Chop lettuce and avocado.", "Mix with olive oil and lemon."],
-  },
-  {
-    id: 2,
-    name: "Fruit Smoothie",
-    ingredients: ["Banana", "Milk", "Honey", "Berries"],
-    steps: ["Blend all ingredients until smooth."],
-  },
-  {
-    id: 3,
-    name: "Vegetable Stir Fry",
-    ingredients: ["Bell Peppers", "Broccoli", "Soy Sauce", "Tofu"],
-    steps: ["Stir fry vegetables.", "Add tofu and soy sauce.", "Serve hot."],
-  },
-];
+import axios from 'axios';
 
 const RecipeReels = () => {
   const navigate = useNavigate();
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const token = localStorage.getItem('firebaseToken');
+        const userId = localStorage.getItem('userId');
+        
+        if (!token || !userId) {
+          setError('Please log in to view recipes');
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.post('http://localhost:8081/api/v1/recommendation',
+          {
+            action: 'get_user_recommendations',
+            user_id: userId,
+            limit: 10
+          },
+          {
+            headers: { 'Authorization': `Bearer ${token}` }
+          }
+        );
+
+        setRecipes(response.data.data.recommendations);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+        setError('Failed to load recipes. Please try again later.');
+        setLoading(false);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
 
   const handleLike = (recipe) => {
     const savedRecipes = JSON.parse(localStorage.getItem("favoriteRecipes")) || [];
     savedRecipes.push(recipe);
     localStorage.setItem("favoriteRecipes", JSON.stringify(savedRecipes));
-    alert(`${recipe.name} added to favorites!`);
+    alert(`${recipe.title} added to favorites!`);
   };
+
+  if (loading) {
+    return (
+      <div className="recipe-reels">
+        <div className="recipeblur-circle orange"></div>
+        <div className="recipeblur-circle red"></div>
+        <p>Loading recipes...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="recipe-reels">
+        <div className="recipeblur-circle orange"></div>
+        <div className="recipeblur-circle red"></div>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="recipe-reels">
       <div className="recipeblur-circle orange"></div>
       <div className="recipeblur-circle red"></div>
       {recipes.map(recipe => (
-        <div key={recipe.id} className="recipe-card">
-          <h3>{recipe.name}</h3>
+        <div key={recipe.recipe_id} className="recipe-card">
+          <h3>{recipe.title}</h3>
           <div>
             <strong>Ingredients:</strong>
             <ul>
@@ -47,9 +85,9 @@ const RecipeReels = () => {
             </ul>
           </div>
           <div>
-            <strong>Steps:</strong>
+            <strong>Instructions:</strong>
             <ul>
-              {recipe.steps.map((step, index) => <li key={index}>{step}</li>)}
+              {recipe.instructions.map((step, index) => <li key={index}>{step}</li>)}
             </ul>
           </div>
           <div className="like-icon" onClick={() => handleLike(recipe)}>❤️</div>

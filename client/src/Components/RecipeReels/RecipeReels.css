@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Poppins Regular'), local('Poppins-Regular'),
+       url('../../assets/fonts/poppins-regular.woff2') format('woff2');
+}
+
 .recipe-reels {
   display: flex;
   flex-direction: column;

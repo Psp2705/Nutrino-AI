@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-/* FavoriteRecipes.css */
+/* 
 .favorite-recipes-container {
     padding: 2rem;
     max-width: 1200px;
@@ -71,7 +70,7 @@
     border-radius: 4px;
     cursor: pointer;
   }
-=======
+
 .favorite-recipes {
   display: flex;
   z-index: 5;
@@ -114,4 +113,3 @@
   width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
->>>>>>> 40bbe7c0212de47aeb22bc3e9d23ea6e65f62131
