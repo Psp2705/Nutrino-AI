@@ -149,14 +149,16 @@ const RecipeReels = () => {
     const isAlreadyFavorite = savedRecipes.some(saved => saved.recipe_id === recipe.recipe_id);
     
     if (!isAlreadyFavorite) {
-      // Format recipe data for storage
+      // Format recipe data for storage, ensuring all required fields exist
       const recipeToSave = {
-        recipe_id: recipe.recipe_id,
-        name: recipe.title,
-        ingredients: recipe.ingredients || [],
-        steps: recipe.instructions || [],
+        recipe_id: recipe.recipe_id || `recipe-${Date.now()}`,
+        name: recipe.title || 'Untitled Recipe',
+        ingredients: Array.isArray(recipe.ingredients) ? recipe.ingredients : [],
+        steps: Array.isArray(recipe.instructions) ? recipe.instructions : [],
         nutrition: recipe.nutrition || {},
-        tags: recipe.tags || [],
+        tags: Array.isArray(recipe.tags) ? recipe.tags : [],
+        reason: recipe.reason || '',
+        recommendation_score: recipe.recommendation_score || 0,
         timestamp: new Date().toISOString()
       };
       
