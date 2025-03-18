@@ -73,6 +73,8 @@ const User = ({ userName, userEmail }) => {
 
   return (
     <div className="portfolio-container">
+      <div className="blur-circle orange"></div>
+      <div className="blur-circle red"></div>
       {/* <nav className="navbar">
         <button>Home</button>
         <button>Work</button>
@@ -141,15 +143,15 @@ const User = ({ userName, userEmail }) => {
       </div>
 
       <div className="social-icons">
-        <button>Behance</button>
-        <button>LinkedIn</button>
-        <button>Instagram</button>
-        <button>Facebook</button>
+        <button>User1</button>
+        <button>User2</button>
+        <button>User3</button>
+        <button>User4</button>
       </div>
 
-      <div className="get-template-button">
+      {/* <div className="get-template-button">
         <button>Get Template</button>
-      </div>
+      </div> */}
     </div>
   );
 };
