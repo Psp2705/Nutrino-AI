@@ -18,7 +18,7 @@ const PersonalinfoPage = () => {
 
   // Navigate to the main page after form submission
   const handleMainPageNavigation = () => {
-    navigate("/frhero");
+    navigate("/user");
   };
 
   const handleChange = (e) => {

@@ -149,9 +149,9 @@ const User = ({ userName, userEmail }) => {
         <button>User4</button>
       </div>
 
-      {/* <div className="get-template-button">
-        <button>Get Template</button>
-      </div> */}
+      <div className="get-template-button">
+        <button onClick={() => navigate("/frhero")}>Home</button>
+      </div>
     </div>
   );
 };
