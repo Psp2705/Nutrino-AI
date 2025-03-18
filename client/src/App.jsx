@@ -13,7 +13,7 @@ import CardioTraining from "./Components/CardioTraining/CardioTraining";
 import BmiCalculator from "./Components/BmiCalculator/BmiCalculator";
 import Chatbot from "./Components/Chatbot/chatbot";
 import User from "./Components/User/User";
-// import RecipeReels from "./Components/RecipeReels/RecipeReels";
+import RecipeReels from "./Components/RecipeReels/RecipeReels";
 import FavoriteRecipes from "./Components/FavoriteRecipes/FavoriteRecipes";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './App.css';
@@ -74,7 +74,7 @@ const App = () => {
           <Route path="/personalinfopage" element={<PersonalinfoPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/recipes" element={<RecipeStream />} />
-          {/* <Route path="/recipereels" element={<RecipeReels />} /> */}
+          <Route path="/recipe-reels" element={<RecipeReels />} />
           <Route path="/strengthvids" element={<Strengthvids />} />
           <Route path="/cardiotraining" element={<CardioTraining />} />
           <Route path="/bmicalculator" element={<BmiCalculator />} />

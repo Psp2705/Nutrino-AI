@@ -1,11 +1,16 @@
+<<<<<<< HEAD
 // FavoriteRecipes.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+=======
+import React, { useEffect, useState } from 'react';
+>>>>>>> 40bbe7c0212de47aeb22bc3e9d23ea6e65f62131
 import './FavoriteRecipes.css';
 
 const FavoriteRecipes = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -182,3 +187,42 @@ export default FavoriteRecipes;
 // };
 
 // export default FavoriteRecipes;
+=======
+
+  useEffect(() => {
+    const storedRecipes = JSON.parse(localStorage.getItem("favoriteRecipes")) || [];
+    setFavoriteRecipes(storedRecipes);
+  }, []);
+
+  return (
+    <div className="favorite-recipes">
+      <div className="favblur-circle orange"></div>
+      <div className="favblur-circle red"></div>
+      <h2>Your Favorite Recipes</h2>
+      {favoriteRecipes.length > 0 ? (
+        favoriteRecipes.map((recipe, index) => (
+          <div key={index} className="favorite-recipe-card">
+            <h3>{recipe.name}</h3>
+            <div>
+              <strong>Ingredients:</strong>
+              <ul>
+                {recipe.ingredients.map((item, idx) => <li key={idx}>{item}</li>)}
+              </ul>
+            </div>
+            <div>
+              <strong>Steps:</strong>
+              <ul>
+                {recipe.steps.map((step, idx) => <li key={idx}>{step}</li>)}
+              </ul>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No favorite recipes yet. Go to Recipe Reels and like some recipes!</p>
+      )}
+    </div>
+  );
+};
+
+export default FavoriteRecipes;
+>>>>>>> 40bbe7c0212de47aeb22bc3e9d23ea6e65f62131
