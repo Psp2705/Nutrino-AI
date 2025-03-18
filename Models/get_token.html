@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Firebase ID Token</title>
+</head>
+<body>
+    <h1>Get Firebase ID Token</h1>
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        // Your Firebase configuration (replace with your own)
+        const firebaseConfig = {
+        apiKey: "AIzaSyDHD-ez_2p2LbHUIMOBKkt9l6ZS1lAqfC8",
+        authDomain: "adminproject-26d75.firebaseapp.com",
+        projectId: "adminproject-26d75",
+        storageBucket: "adminproject-26d75.firebasestorage.app",
+        messagingSenderId: "1071874739647",
+        appId: "1:1071874739647:web:1139c921f72caf6d7fe50a"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Sign in and get ID token
+        signInWithEmailAndPassword(auth, "user1@example.com", "test123")
+            .then((userCredential) => {
+                return userCredential.user.getIdToken();
+            })
+            .then((token) => {
+                console.log("ID Token:", token);
+                document.body.innerHTML += `<p>ID Token: ${token}</p>`;
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                document.body.innerHTML += `<p>Error: ${error.message}</p>`;
+            });
+    </script>
+</body>
+</html>

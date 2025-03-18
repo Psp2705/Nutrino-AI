@@ -1,0 +1,472 @@
+# from .firebase_setup import db
+# from sklearn.metrics.pairwise import cosine_similarity
+# from sklearn.cluster import KMeans
+# import numpy as np
+# import random
+# from datetime import datetime
+# import logging
+
+# # Set up logging
+# logging.basicConfig(level=logging.INFO)
+
+# class RecipeRecommender:
+#     def __init__(self, user_id):
+#         self.user_id = user_id
+#         self.user_data = self.get_user_data()
+#         self.recipes = self.get_recipes()
+#         logging.info(f"Initialized recommender for user: {user_id}")
+#         logging.info(f"User BMI: {self.calculate_bmi()}")
+#         logging.info(f"User daily calorie needs: {self.estimate_calorie_needs()}")
+
+#     def get_user_data(self):
+#         doc = db.collection("users").document(self.user_id).get()
+#         user_data = doc.to_dict() if doc.exists else {"preferences": [], "history": [], "email": ""}
+#         # Ensure we have health data with defaults
+#         if "height_cm" not in user_data:
+#             user_data["height_cm"] = 170
+#         if "weight_kg" not in user_data:
+#             user_data["weight_kg"] = 70
+#         if "activity_level" not in user_data:
+#             user_data["activity_level"] = "moderate"
+#         return user_data
+
+#     def get_recipes(self, limit=1000):
+#         docs = db.collection("recipes").limit(limit).stream()
+#         recipes = []
+#         for doc in docs:
+#             recipe = doc.to_dict()
+#             recipe["recipe_id"] = recipe.get("recipe_id", doc.id)
+#             # Add calories if not present
+#             if "calories" not in recipe:
+#                 recipe["calories"] = len(recipe["ingredients"]) * 150
+#             recipes.append(recipe)
+#         logging.info(f"Loaded {len(recipes)} recipes")
+#         return recipes
+
+#     def get_all_users(self):
+#         docs = db.collection("users").stream()
+#         return {doc.id: doc.to_dict() for doc in docs if doc.id != self.user_id}
+
+#     def vectorize_ingredients(self, ingredients):
+#         all_ings = set()
+#         for r in self.recipes:
+#             all_ings.update(r["ingredients"])
+#         return np.array([1 if ing in ingredients else 0 for ing in all_ings])
+
+#     def user_similarity(self, other_user):
+#         # Preference similarity
+#         my_prefs = set(self.user_data["preferences"])
+#         other_prefs = set(other_user.get("preferences", []))
+#         pref_sim = len(my_prefs & other_prefs) / max(len(my_prefs | other_prefs), 1) if my_prefs or other_prefs else 0
+        
+#         # History similarity
+#         my_hist = self.user_data.get("history", [])
+#         other_hist = other_user.get("history", [])
+        
+#         my_hist_ings = set()
+#         for h in my_hist:
+#             if "ingredients" in h:
+#                 my_hist_ings.update(h["ingredients"])
+                
+#         other_hist_ings = set()
+#         for h in other_hist:
+#             if "ingredients" in h:
+#                 other_hist_ings.update(h["ingredients"])
+                
+#         hist_sim = len(my_hist_ings & other_hist_ings) / max(len(my_hist_ings | other_hist_ings), 1) if my_hist_ings or other_hist_ings else 0
+        
+#         # Health profile similarity
+#         my_bmi = self.calculate_bmi()
+#         other_height = other_user.get("height_cm", 170) / 100
+#         other_weight = other_user.get("weight_kg", 70)
+#         other_bmi = other_weight / (other_height ** 2) if other_height > 0 else 25
+        
+#         # BMI category similarity
+#         def bmi_category(bmi):
+#             if bmi < 18.5: return "underweight"
+#             elif bmi < 25: return "normal"
+#             elif bmi < 30: return "overweight"
+#             else: return "obese"
+        
+#         bmi_sim = 1.0 if bmi_category(my_bmi) == bmi_category(other_bmi) else 0.5
+        
+#         # Activity level similarity
+#         my_activity = self.user_data.get("activity_level", "moderate")
+#         other_activity = other_user.get("activity_level", "moderate")
+#         activity_sim = 1.0 if my_activity == other_activity else 0.5
+        
+#         # Combined similarity with health factors
+#         return 0.4 * pref_sim + 0.3 * hist_sim + 0.2 * bmi_sim + 0.1 * activity_sim
+
+#     def collaborative_score(self, recipe):
+#         all_users = self.get_all_users()
+#         similar_users = [(uid, self.user_similarity(u)) for uid, u in all_users.items()]
+#         top_similar = sorted(similar_users, key=lambda x: x[1], reverse=True)[:5]
+        
+#         weighted_sum = 0
+#         similarity_sum = 0
+        
+#         for uid, sim in top_similar:
+#             for hist in all_users[uid].get("history", []):
+#                 if hist.get("recipe_id") == recipe["recipe_id"]:
+#                     weighted_sum += sim * hist.get("rating", 3)
+#                     similarity_sum += sim
+        
+#         if similarity_sum > 0:
+#             return weighted_sum / similarity_sum
+#         return 0
+
+#     def calculate_score(self, recipe, ingredients):
+#         # Base scoring
+#         user_vec = self.vectorize_ingredients(ingredients)
+#         recipe_vec = self.vectorize_ingredients(recipe["ingredients"])
+#         ing_similarity = cosine_similarity([user_vec], [recipe_vec])[0][0]
+        
+#         user_prefs = self.user_data.get("preferences", [])
+#         recipe_tags = recipe.get("tags", [])
+#         pref_match = sum(1 for p in user_prefs if p in recipe_tags) / max(len(user_prefs), 1) if user_prefs else 0.5
+        
+#         history_sim = self.history_similarity(recipe)
+#         collab_sim = self.collaborative_score(recipe)
+        
+#         base_score = 0.30 * ing_similarity + 0.20 * pref_match + 0.20 * history_sim + 0.15 * collab_sim
+        
+#         # Nutrition scoring
+#         bmi = self.calculate_bmi()
+#         target_calories = self.estimate_calorie_needs() / 3  # Per meal
+#         recipe_calories = recipe.get("calories", 500)
+        
+#         # Calorie match score - higher when closer to target
+#         calorie_diff = abs(recipe_calories - target_calories)
+#         calorie_match = max(0, 1 - (calorie_diff / target_calories))
+        
+#         # BMI-based tag scoring
+#         health_tags = []
+#         if bmi > 25:  # Overweight
+#             health_tags = ["low-carb", "low-calorie", "high-protein"]
+#         elif bmi < 18.5:  # Underweight
+#             health_tags = ["high-protein", "high-calorie", "nutrient-dense"]
+#         else:  # Normal weight
+#             health_tags = ["balanced", "moderate", "healthy"]
+        
+#         tag_match = sum(1 for tag in health_tags if tag in recipe_tags) / len(health_tags) if recipe_tags else 0
+        
+#         # Combined score
+#         nutrition_score = 0.7 * calorie_match + 0.3 * tag_match
+#         total_score = 0.8 * base_score + 0.2 * nutrition_score
+        
+#         logging.info(f"Recipe {recipe['title']} score: {total_score:.4f} (base: {base_score:.4f}, nutrition: {nutrition_score:.4f})")
+#         return total_score
+
+#     def history_similarity(self, recipe):
+#         history = self.user_data.get("history", [])
+#         if not history:
+#             return 0
+            
+#         now = datetime.now()
+#         recipe_vec = self.vectorize_ingredients(recipe["ingredients"])
+        
+#         hist_vecs = []
+#         for h in history:
+#             if "ingredients" in h:
+#                 hist_vecs.append(self.vectorize_ingredients(h["ingredients"]))
+        
+#         if not hist_vecs:
+#             return 0
+            
+#         # Exponential decay for recency
+#         def recency_weight(days):
+#             return np.exp(-0.023 * days)  # Half-life of ~30 days
+        
+#         weighted_scores = []
+#         for i, (past, vec) in enumerate(zip(history, hist_vecs)):
+#             sim = cosine_similarity([vec], [recipe_vec])[0][0]
+#             try:
+#                 days_old = (now - datetime.strptime(past["timestamp"], "%Y-%m-%d")).days
+#             except:
+#                 days_old = 30  # Default if timestamp is invalid
+#             weight = recency_weight(days_old)
+#             rating = past.get("rating", 3)
+#             weighted_scores.append((sim * rating * weight, weight))
+        
+#         if not weighted_scores:
+#             return 0
+            
+#         total_score = sum(s[0] for s in weighted_scores)
+#         total_weight = sum(s[1] for s in weighted_scores)
+        
+#         return total_score / total_weight if total_weight else 0
+
+#     def calculate_bmi(self):
+#         height = self.user_data.get("height_cm", 170) / 100
+#         weight = self.user_data.get("weight_kg", 70)
+#         bmi = weight / (height ** 2) if height > 0 else 25
+#         logging.info(f"User BMI: {bmi:.1f}")
+#         return bmi
+
+#     def estimate_calorie_needs(self):
+#         height = self.user_data.get("height_cm", 170)
+#         weight = self.user_data.get("weight_kg", 70)
+#         # Harris-Benedict equation (simplified)
+#         base_calories = 10 * weight + 6.25 * height - 5 * 30 + 5  # Assuming age 30
+        
+#         # Activity multiplier
+#         activity = self.user_data.get("activity_level", "moderate")
+#         multipliers = {
+#             "sedentary": 1.2,
+#             "light": 1.375,
+#             "moderate": 1.55,
+#             "active": 1.725,
+#             "very_active": 1.9
+#         }
+        
+#         daily_calories = base_calories * multipliers.get(activity, 1.55)
+#         logging.info(f"Estimated daily calorie needs: {daily_calories:.0f}")
+#         return daily_calories
+
+#     def filter_by_nutrition(self, recipes, target_calories):
+#         # Make sure all recipes have calorie information
+#         for recipe in recipes:
+#             if "calories" not in recipe:
+#                 recipe["calories"] = len(recipe["ingredients"]) * 150
+        
+#         # Calculate tolerance based on BMI
+#         bmi = self.calculate_bmi()
+#         if bmi > 25:  # Overweight - stricter calorie control
+#             tolerance = 150
+#         elif bmi < 18.5:  # Underweight - more calories allowed
+#             tolerance = 300
+#         else:  # Normal weight
+#             tolerance = 200
+            
+#         filtered = [r for r in recipes if abs(r.get("calories", 500) - target_calories) <= tolerance]
+#         logging.info(f"Filtered {len(filtered)} recipes within {tolerance} calories of target {target_calories:.0f}")
+#         return filtered
+
+#     def generate_recipe(self, ingredients, target_calories):
+#         bmi = self.calculate_bmi()
+        
+#         # Customize recipe based on BMI
+#         if bmi > 25:  # Overweight
+#             cooking_method = random.choice(["steamed", "grilled", "baked"])
+#             protein_emphasis = True
+#             carb_reduction = True
+#             title_prefix = "Lean"
+#             focus = "low-calorie"
+#         elif bmi < 18.5:  # Underweight
+#             cooking_method = random.choice(["pan-fried", "roasted", "sautéed"])
+#             protein_emphasis = True
+#             carb_reduction = False
+#             title_prefix = "Nutrient-Rich"
+#             focus = "high-protein"
+#         else:  # Normal weight
+#             cooking_method = random.choice(["roasted", "grilled", "sautéed"])
+#             protein_emphasis = False
+#             carb_reduction = False
+#             title_prefix = "Balanced"
+#             focus = "balanced"
+        
+#         # Get main ingredient (prefer protein for certain BMI ranges)
+#         protein_ingredients = ["chicken", "beef", "tofu", "fish", "eggs", "turkey"]
+#         main_ingredient = next((i for i in ingredients if i in protein_ingredients), ingredients[0])
+        
+#         # Generate title
+#         secondary_ingredients = [i for i in ingredients if i != main_ingredient]
+#         if secondary_ingredients:
+#             title = f"{title_prefix} {cooking_method.capitalize()} {main_ingredient.capitalize()} with {', '.join(secondary_ingredients)}"
+#         else:
+#             title = f"{title_prefix} {cooking_method.capitalize()} {main_ingredient.capitalize()}"
+        
+#         # Create detailed instructions
+#         instructions = []
+#         instructions.append(f"1. Prep {main_ingredient}: Wash and cut into appropriate pieces.")
+#         instructions.append(f"2. Heat a pan for {cooking_method} cooking.")
+#         instructions.append(f"3. {cooking_method.capitalize()} {main_ingredient} until properly cooked.")
+        
+#         # Add remaining ingredients
+#         for i, ing in enumerate(secondary_ingredients, 4):
+#             instructions.append(f"{i}. Add {ing} and continue cooking.")
+        
+#         # Add health-specific steps
+#         if protein_emphasis:
+#             instructions.append(f"{len(ingredients) + 3}. Add extra protein seasoning for nutritional boost.")
+#         if carb_reduction:
+#             instructions.append(f"{len(ingredients) + 4}. Serve without additional carbs for a lighter meal.")
+        
+#         # Final step
+#         instructions.append(f"{len(ingredients) + 5}. Plate and serve.")
+        
+#         # Get user preferences
+#         tags = list(self.user_data.get("preferences", []))
+#         if focus not in tags:
+#             tags.append(focus)
+        
+#         # Generate recipe object
+#         recipe_id = f"recipe_{random.randint(1000, 9999)}"
+#         calories = target_calories if target_calories else len(ingredients) * 150
+        
+#         recipe = {
+#             "recipe_id": recipe_id,
+#             "title": title,
+#             "ingredients": ingredients,
+#             "tags": tags,
+#             "instructions": " ".join(instructions),
+#             "calories": calories,
+#             "cook_time": f"{15 + len(ingredients) * 5} min",
+#             "prep_time": f"{10 + len(ingredients) * 2} min",
+#             "nutrition_focus": focus,
+#             "generated_for_bmi": round(bmi, 1)
+#         }
+        
+#         logging.info(f"Generated recipe: {recipe['title']} with {calories} calories")
+#         return recipe
+
+#     def recommend(self, ingredients, top_n=5):
+#         # Calculate calorie target based on BMI and activity
+#         target_calories = self.estimate_calorie_needs() / 3  # Per meal
+        
+#         # First, filter recipes by available ingredients
+#         viable_recipes = []
+#         for recipe in self.recipes:
+#             required_ingredients = set(recipe["ingredients"])
+#             available_ingredients = set(ingredients)
+            
+#             # Calculate coverage - how many of the required ingredients we have
+#             coverage = len(required_ingredients.intersection(available_ingredients)) / len(required_ingredients)
+            
+#             # Consider recipes that have at least 60% ingredient coverage
+#             if coverage >= 0.6:
+#                 viable_recipes.append(recipe)
+        
+#         logging.info(f"Found {len(viable_recipes)} viable recipes with at least 60% ingredient coverage")
+        
+#         # If no viable recipes, generate a custom one
+#         if not viable_recipes:
+#             logging.info("No viable recipes found. Generating a custom recipe.")
+#             custom_recipe = self.generate_recipe(ingredients, target_calories)
+#             return [custom_recipe]
+        
+#         # Next, filter by nutritional needs
+#         nutrition_filtered = self.filter_by_nutrition(viable_recipes, target_calories)
+        
+#         # If nutrition filtering eliminated all options, revert to viable recipes
+#         if not nutrition_filtered:
+#             logging.info("Nutrition filtering eliminated all options. Reverting to viable recipes.")
+#             nutrition_filtered = viable_recipes
+        
+#         # Score the remaining recipes
+#         scored_recipes = []
+#         for recipe in nutrition_filtered:
+#             score = self.calculate_score(recipe, ingredients)
+#             scored_recipes.append((recipe, score))
+        
+#         # Sort by score and get top N
+#         recommended = sorted(scored_recipes, key=lambda x: x[1], reverse=True)[:top_n]
+        
+#         # If we have less than top_n recommendations, add a custom recipe
+#         if len(recommended) < top_n:
+#             custom_recipe = self.generate_recipe(ingredients, target_calories)
+#             recommended.append((custom_recipe, 1.0))  # Give it a perfect score since it's custom
+        
+#         # Log recommendations
+#         logging.info(f"Recommended {len(recommended)} recipes (requested {top_n})")
+#         for i, (recipe, score) in enumerate(recommended):
+#             logging.info(f"  {i+1}. {recipe['title']} (score: {score:.4f})")
+        
+#         # Return just the recipes without scores
+#         return [r[0] for r in recommended]
+
+#     def cluster_recipes(self, n_clusters=5):
+#         """Cluster recipes into groups for discovery"""
+#         # Extract features from recipes
+#         features = []
+#         for recipe in self.recipes:
+#             # Create feature vector: ingredients, calories, tags
+#             recipe_vec = self.vectorize_ingredients(recipe["ingredients"])
+#             calories = recipe.get("calories", 500) / 1000  # Normalize
+            
+#             # One-hot encoding for common tags
+#             common_tags = ["vegetarian", "vegan", "gluten-free", "low-carb", "high-protein"]
+#             tag_vec = np.array([1 if tag in recipe.get("tags", []) else 0 for tag in common_tags])
+            
+#             # Combine features
+#             feature_vec = np.concatenate([recipe_vec, [calories], tag_vec])
+#             features.append(feature_vec)
+        
+#         # Apply KMeans clustering
+#         features_array = np.array(features)
+#         kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+#         clusters = kmeans.fit_predict(features_array)
+        
+#         # Group recipes by cluster
+#         clustered_recipes = {i: [] for i in range(n_clusters)}
+#         for i, cluster in enumerate(clusters):
+#             clustered_recipes[cluster].append(self.recipes[i])
+        
+#         # Get cluster characteristics
+#         cluster_info = {}
+#         for cluster, recipes in clustered_recipes.items():
+#             # Most common ingredients
+#             all_ingredients = []
+#             for r in recipes:
+#                 all_ingredients.extend(r["ingredients"])
+#             ingredient_counts = {}
+#             for ing in all_ingredients:
+#                 ingredient_counts[ing] = ingredient_counts.get(ing, 0) + 1
+#             top_ingredients = sorted(ingredient_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+            
+#             # Most common tags
+#             all_tags = []
+#             for r in recipes:
+#                 all_tags.extend(r.get("tags", []))
+#             tag_counts = {}
+#             for tag in all_tags:
+#                 tag_counts[tag] = tag_counts.get(tag, 0) + 1
+#             top_tags = sorted(tag_counts.items(), key=lambda x: x[1], reverse=True)[:3]
+            
+#             # Average calories
+#             avg_calories = sum(r.get("calories", 500) for r in recipes) / len(recipes)
+            
+#             cluster_info[cluster] = {
+#                 "size": len(recipes),
+#                 "top_ingredients": [ing for ing, _ in top_ingredients],
+#                 "top_tags": [tag for tag, _ in top_tags],
+#                 "avg_calories": avg_calories
+#             }
+        
+#         logging.info(f"Clustered recipes into {n_clusters} groups")
+#         for cluster, info in cluster_info.items():
+#             logging.info(f"Cluster {cluster}: {info['size']} recipes, avg {info['avg_calories']:.0f} calories")
+#             logging.info(f"  Top ingredients: {', '.join(info['top_ingredients'])}")
+#             logging.info(f"  Top tags: {', '.join(info['top_tags'])}")
+        
+#         return clustered_recipes, cluster_info
+
+#     def save_recommendation(self, recipe, rating=None):
+#         """Save a recipe to user history with optional rating"""
+#         now = datetime.now()
+#         history_entry = {
+#             "recipe_id": recipe["recipe_id"],
+#             "title": recipe["title"],
+#             "ingredients": recipe["ingredients"],
+#             "timestamp": now.strftime("%Y-%m-%d"),
+#             "calories": recipe.get("calories", 500)
+#         }
+        
+#         if rating is not None:
+#             history_entry["rating"] = rating
+        
+#         # Add to user history
+#         history = self.user_data.get("history", [])
+#         history.append(history_entry)
+#         self.user_data["history"] = history
+        
+#         # Update in database
+#         db.collection("users").document(self.user_id).update({
+#             "history": history
+#         })
+        
+#         logging.info(f"Saved recipe {recipe['title']} to user history")
+#         return True
+
+    
