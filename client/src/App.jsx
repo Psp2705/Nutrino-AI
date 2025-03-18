@@ -13,6 +13,7 @@ import CardioTraining from "./Components/CardioTraining/CardioTraining";
 import BmiCalculator from "./Components/BmiCalculator/BmiCalculator";
 import Chatbot from "./Components/Chatbot/chatbot";
 import "./App.css";
+import User from "./Components/User/User";
 
 const App = () => {
   let heroData = [
@@ -58,6 +59,7 @@ const App = () => {
         <Route path="/cardiotraining" element={<CardioTraining />} />
         <Route path="/bmicalculator" element={<BmiCalculator />} />
         <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/user" element={<User />} />
         {/* Programs page from dashboard */}
         {/* <Route path="/frprograms" element={<FrPrograms />} /> */}
       </Routes>
