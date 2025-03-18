@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./BmiCalculator.css";
+import React, { useState, useEffect } from "react";
+import "./BMICalculator.css";
 
 const BmiCalculator = () => {
   const [weight, setWeight] = useState("");
@@ -7,7 +7,21 @@ const BmiCalculator = () => {
   const [age, setAge] = useState("");
   const [bmi, setBmi] = useState(null);
   const [message, setMessage] = useState("");
-  const [planner, setPlanner] = useState(null); // New state for the planner
+  const [planner, setPlanner] = useState(null);
+
+  // Load stored BMI data on component mount
+  useEffect(() => {
+    const storedBmiData = localStorage.getItem("bmiData");
+    if (storedBmiData) {
+      const parsedData = JSON.parse(storedBmiData);
+      setBmi(parsedData.bmi);
+      setMessage(parsedData.message);
+      setPlanner(parsedData.planner);
+      setWeight(parsedData.weight);
+      setHeight(parsedData.height);
+      setAge(parsedData.age);
+    }
+  }, []);
 
   const calculateBMI = () => {
     if (weight && height && age) {
@@ -20,26 +34,43 @@ const BmiCalculator = () => {
 
   const determineMessageAndPlanner = (bmiValue) => {
     let plannerDetails = {};
+    let messageText = "";
+    
     if (bmiValue < 18.5) {
-      setMessage(
-        `You are underweight. Aim to gain ${getWeightAdjustment(
-          bmiValue,
-          "gain"
-        )} kg.`
-      );
+      messageText = `You are underweight. Aim to gain ${getWeightAdjustment(
+        bmiValue,
+        "gain"
+      )} kg.`;
+      setMessage(messageText);
+      plannerDetails = generatePlanner("gain");
     } else if (bmiValue >= 18.5 && bmiValue <= 24.9) {
-      setMessage("You are within the normal range.");
+      messageText = "You are within the normal range.";
+      setMessage(messageText);
       setPlanner(null); // No planner needed for normal range
+      return; // Exit early as no planner is needed
     } else if (bmiValue >= 25) {
-      setMessage(
-        `You are overweight. Aim to lose ${getWeightAdjustment(
-          bmiValue,
-          "lose"
-        )} kg.`
-      );
+      messageText = `You are overweight. Aim to lose ${getWeightAdjustment(
+        bmiValue,
+        "lose"
+      )} kg.`;
+      setMessage(messageText);
       plannerDetails = generatePlanner("lose");
     }
+    
     setPlanner(plannerDetails);
+    
+    // Store BMI data in local storage
+    const bmiData = {
+      bmi: bmiValue,
+      message: messageText,
+      planner: plannerDetails,
+      weight,
+      height,
+      age,
+      calculatedAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem("bmiData", JSON.stringify(bmiData));
   };
 
   const getWeightAdjustment = (bmiValue, action) => {
@@ -62,6 +93,11 @@ const BmiCalculator = () => {
           "Weight lifting: Aim for 3-4 sessions per week.",
           "Rest and recovery: Allow your body enough time to recover between workouts.",
         ],
+        recipes: [
+          "Protein-rich smoothie: 1 banana, 2 tbsp peanut butter, 1 cup milk, 1 scoop protein powder",
+          "Avocado toast: 2 slices whole grain bread, 1 avocado, 2 eggs, salt and pepper",
+          "Greek yogurt parfait: 1 cup Greek yogurt, 1/4 cup granola, mixed berries, honey"
+        ]
       };
     } else if (action === "lose") {
       return {
@@ -75,6 +111,11 @@ const BmiCalculator = () => {
           "High-intensity interval training (HIIT): 3 times a week.",
           "Strength training: Build muscle mass to burn more calories at rest.",
         ],
+        recipes: [
+          "Veggie stir-fry: Mixed vegetables, tofu, ginger, garlic, low-sodium soy sauce",
+          "Grilled chicken salad: Leafy greens, grilled chicken breast, tomatoes, cucumber, light vinaigrette",
+          "Baked salmon with steamed vegetables: Salmon fillet, broccoli, carrots, lemon juice, herbs"
+        ]
       };
     }
     return {};
@@ -136,6 +177,16 @@ const BmiCalculator = () => {
                     ))}
                   </ul>
                 </div>
+                {planner.recipes && (
+                  <div>
+                    <h4>Recommended Recipes:</h4>
+                    <ul>
+                      {planner.recipes.map((recipe, index) => (
+                        <li key={index}>{recipe}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </div>

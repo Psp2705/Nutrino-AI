@@ -6,6 +6,73 @@ body {
     font-family: Arial, sans-serif;
   }
   
+  /* Add these styles to your existing User.css file */
+  
+  .bmi-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    max-height: 165px;  /* Limit height to ensure it fits in the card */
+    overflow-y: auto;   /* Add vertical scrolling */
+    scrollbar-width: thin;  /* For Firefox */
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;  /* For Firefox */
+  }
+  
+  /* Custom scrollbar styling for WebKit browsers (Chrome, Safari) */
+  .bmi-info::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .bmi-info::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .bmi-info::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+  }
+  
+  .bmi-info h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;  /* Slightly smaller font size */
+    color: #444444;
+  }
+  
+  .bmi-info p {
+    margin: 6px 0;  /* Reduced margin */
+    font-size: 14px;  /* Smaller font size */
+  }
+  
+  .health-plan {
+    margin-top: 10px;  /* Reduced margin */
+  }
+  
+  .health-plan h4 {
+    margin-bottom: 8px;
+    font-size: 14px;  /* Smaller font size */
+    color: #444444;
+  }
+  
+  .diet-list {
+    padding-left: 15px;  /* Reduced padding */
+    margin: 8px 0;
+  }
+  
+  .diet-list li {
+    margin-bottom: 6px;  /* Reduced margin */
+    font-size: 12px;  /* Smaller font size */
+    line-height: 1.3;  /* Reduced line height */
+  }
+  
+  .skills h4 {
+    margin-top: 10px;  /* Reduced margin */
+    margin-bottom: 8px;
+    font-size: 14px;  /* Smaller font size */
+    color: #444444;
+  }
+  
   .portfolio-container {
     display: flex;
     flex-direction: column;
@@ -59,8 +126,7 @@ body {
     grid-row: 1 / 2;
     height: 300px;
   }
-
-
+  
   .skills-card {
     grid-column: 3 / 4;
     grid-row: 1 / 2;
@@ -69,6 +135,16 @@ body {
     top: -380px;
     width: 600px;
     height: 300px;
+    overflow: hidden;  /* Hide any overflow */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .skills-card .skills {
+    padding: 10px;
+    background-color: #F0F0FF;
+    border-radius: 10px;
+    margin-top: auto;  /* Push to bottom of container */
   }
   
   .work-card {
@@ -88,7 +164,7 @@ body {
     gap: 20px;
     margin-top: 20px;
   }
-
+  
   .image-card {
     position: relative;
     left: 480px;
@@ -101,18 +177,11 @@ body {
     border-radius: 12px;
   }
   
-  .skills-card .skills {
-    padding: 10px;
-    background-color: #F0F0FF;
-    border-radius: 10px;
-  }
-
   .about-card {
     position: relative;
     width: 380px;
     top: -380px;
   }
-
   
   .work-card, .about-card {
     display: flex;
@@ -151,4 +220,3 @@ body {
   .get-template-button button:hover {
     background-color: #6A47B1;
   }
-  
