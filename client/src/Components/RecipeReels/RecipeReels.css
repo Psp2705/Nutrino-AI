@@ -10,10 +10,11 @@
 }
 
 .recipeblur-circle {
-  position: absolute;
+  position: fixed; /* Change from absolute to fixed */
   border-radius: 50%;
   filter: blur(120px);
   z-index: 1;
+  pointer-events: none; /* Prevent interaction */
 }
 
 /* Orange Circle */
@@ -33,6 +34,7 @@
   bottom: 15%;
   right: 20%;
 }
+
 
 .recipe-tags {
   display: flex;
@@ -97,8 +99,4 @@
   font-size: 24px;
   margin-top: 16px;
   text-align: right;
-}
-
-.like-icon:hover {
-  transform: scale(1.1);
 }

@@ -1,42 +1,91 @@
 .favorite-recipes {
-  display: flex;
-  z-index: 5;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  color: orange;
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  /* background: #fff;
+  min-height: 100vh; */
 }
 
 .favblur-circle {
   position: absolute;
+  width: 550px;
+  height: 550px;
   border-radius: 50%;
-  filter: blur(120px);
-  z-index: 1;
+  filter: blur(70px);
+  opacity: 0.6;
 }
 
-/* Orange Circle */
-.orange {
-  width: 300px;
-  height: 300px;
-  background-color: orange;
-  top: 10%;
-  left: 10px;
+.favblur-circle.orange {
+  background-color: rgba(255, 165, 0, 0.5);
+  top: 10px;
+  left: -800px;
 }
 
-/* Red Circle */
-.red {
-  width: 400px;
-  height: 400px;
-  background-color: red;
-  bottom: 15%;
-  right: 20px;
+.favblur-circle.red {
+  background-color: rgba(255, 0, 0, 0.5);
+  top: 50%;
+  right: -800px;
 }
 
+h2 {
+  font-size: 46px;
+  color: #ffffffe0;
+  margin-bottom: 20px;
+}
 
 .favorite-recipe-card {
-  background-color: white;
+  background: #ffffffe0;
   border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 400px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 15px auto;
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
+  transition: transform 0.2s ease-in-out;
+}
+
+.favorite-recipe-card:hover {
+  transform: translateY(-3px);
+}
+
+.favorite-recipe-card h3 {
+  font-size: 22px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.favorite-recipe-card ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.favorite-recipe-card li {
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.favorite-recipe-card div {
+  margin-top: 10px;
+}
+
+.remove-btn {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  transition: background 0.3s ease-in-out;
+}
+
+.remove-btn:hover {
+  background: #cc0000;
 }
