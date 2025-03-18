@@ -1,4 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Sensitive Firebase and environment files
 firebase.js
-serviceAccountKey.json
 .env
+serviceAccountkey.json
 get_token.html
+
+# Additional common ignores (optional)
+*.pem
+*.key
+*.cert

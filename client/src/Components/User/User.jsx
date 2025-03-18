@@ -1,22 +1,86 @@
-import React, { useEffect, useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import { db } from '../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 import './User.css';
 import { useNavigate } from 'react-router-dom';
 
 const User = ({ userName, userEmail }) => {
   const [userPreference, setUserPreference] = useState('');
   const [loading, setLoading] = useState(true);
-  const [bmiData, setBmiData] = useState(null);
+  const [healthData, setHealthData] = useState({
+    bmi: null,
+    healthStatus: null,
+    healthTags: [],
+    dailyCalories: null,
+    perMealCalories: null
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch BMI data from local storage
-    const storedBmiData = localStorage.getItem("bmiData");
-    if (storedBmiData) {
-      setBmiData(JSON.parse(storedBmiData));
-    }
-    
+    const fetchHealthData = async () => {
+      try {
+        const token = localStorage.getItem('firebaseToken');
+        const userId = localStorage.getItem('userId');
+        
+        if (!token || !userId) {
+          console.error('No authentication token or user ID found');
+          return;
+        }
+
+        // Fetch BMI
+        const bmiResponse = await axios.post('http://localhost:8081/api/v1/recommendation', 
+          { 
+            action: 'calculate_bmi',
+            user_id: userId
+          },
+          { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+        
+        // Fetch Health Profile
+        const healthProfileResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
+          { 
+            action: 'get_health_profile',
+            user_id: userId
+          },
+          { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+        
+        // Fetch Calorie Needs
+        const caloriesResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
+          { 
+            action: 'estimate_calories',
+            user_id: userId
+          },
+          { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+
+        setHealthData({
+          bmi: bmiResponse.data.data.bmi,
+          healthStatus: healthProfileResponse.data.data.health_status,
+          healthTags: healthProfileResponse.data.data.health_tags,
+          dailyCalories: caloriesResponse.data.data.daily_calories,
+          perMealCalories: caloriesResponse.data.data.per_meal_calories
+        });
+      } catch (error) {
+        console.error('Error fetching health data:', error);
+        // Add user-friendly error message
+        setHealthData({
+          bmi: null,
+          healthStatus: 'Error loading health data',
+          healthTags: [],
+          dailyCalories: null,
+          perMealCalories: null
+        });
+      }
+    };
+
+    fetchHealthData();
+  }, []);
+
+  useEffect(() => {
     const fetchUserPreference = async () => {
       if (userName && userEmail) {
         try {
@@ -53,11 +117,11 @@ const User = ({ userName, userEmail }) => {
     fetchUserPreference();
   }, [userName, userEmail]);
 
-  // Format date for display
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+  const getBmiMessage = (bmi) => {
+    if (bmi < 18.5) return "You are underweight. Consider increasing your caloric intake.";
+    if (bmi < 25) return "You have a healthy weight. Keep maintaining your lifestyle!";
+    if (bmi < 30) return "You are overweight. Consider reducing caloric intake and increasing physical activity.";
+    return "You are obese. Please consult a healthcare provider for personalized advice.";
   };
 
   const handleGenerateRecipes = () => {
@@ -88,29 +152,31 @@ const User = ({ userName, userEmail }) => {
           </div>
           <div className="card skills-card">
             <h2>Health Profile</h2>
-            {bmiData ? (
+            {healthData.bmi ? (
               <div className="bmi-info">
-                <h3>BMI: {bmiData.bmi} ({formatDate(bmiData.calculatedAt)})</h3>
-                <p>{bmiData.message}</p>
+                <h3>BMI: {healthData.bmi.toFixed(1)}</h3>
+                <p>{getBmiMessage(healthData.bmi)}</p>
                 
-                {bmiData.planner && bmiData.planner.recipes && (
-                  <div className="health-plan">
-                    <h4>Recommended Diet</h4>
-                    <ul className="diet-list">
-                      {bmiData.planner.recipes.map((recipe, index) => (
-                        <li key={index}>{recipe}</li>
+                <div className="health-details">
+                  <h4>Health Status: {healthData.healthStatus}</h4>
+                  <div className="health-tags">
+                    <h4>Recommended Health Tags:</h4>
+                    <ul>
+                      {healthData.healthTags.map((tag, index) => (
+                        <li key={index}>{tag}</li>
                       ))}
                     </ul>
                   </div>
-                )}
+                  
+                  <div className="calorie-info">
+                    <h4>Daily Calorie Needs: {Math.round(healthData.dailyCalories)} kcal</h4>
+                    <p>Per meal: {Math.round(healthData.perMealCalories)} kcal</p>
+                  </div>
+                </div>
               </div>
             ) : (
-              <p>No BMI data available. Please visit the BMI calculator to generate your health profile.</p>
+              <p>Loading health profile data...</p>
             )}
-            {/* <div className="skills">
-              <h4>Design skills</h4>
-              Dora / HTML & CSS / Figma / Prototyping / Wireframing / p5.js / Adobe XD / InDesign
-            </div> */}
           </div>
         </div>
 
@@ -140,6 +206,11 @@ const User = ({ userName, userEmail }) => {
       </div>
     </div>
   );
+};
+
+User.propTypes = {
+  userName: PropTypes.string,
+  userEmail: PropTypes.string
 };
 
 export default User;
