@@ -60,14 +60,14 @@ const RecipeStream = () => {
                         placeholder="Enter Height (cm)" 
                         value={height}
                         onChange={(e) => setHeight(e.target.value)}
-                        className="search-input" 
+                        className="searchh-input" 
                     />
                     <input 
                         type="number" 
                         placeholder="Enter Weight (kg)" 
                         value={weight}
                         onChange={(e) => setWeight(e.target.value)}
-                        className="search-input" 
+                        className="searchh-input" 
                     />
                     <input 
                         type="number" 
@@ -76,7 +76,7 @@ const RecipeStream = () => {
                         onChange={(e) => setActivityLevel(e.target.value)}
                         min="1"
                         max="5"
-                        className="search-input" 
+                        className="searchh-input" 
                     />
                     <button onClick={fetchRecipes} className="search-button">Search</button>
                 </div>

@@ -72,4 +72,6 @@
 
 .hero-dot.orange {
   background: orangered;
+  width: 10px;
+  height: 10px;
 }
