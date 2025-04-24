@@ -1,4 +1,4 @@
-from .firebase_setup import db
+from firebase_setup import db
 docs = db.collection("recipes").stream()
 for doc in docs:
     data = doc.to_dict()

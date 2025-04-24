@@ -15,29 +15,54 @@ class RecipeRecommender:
         self.user_id = user_id
         self.user_data = self.get_user_data()
         self.recipes = self.get_recipes()
-        # Initialize OpenAI client (make sure to set OPENAI_API_KEY in environment)
-        self.openai_client = openai.OpenAI()
+        # Initialize OpenAI client only if needed
+        self.openai_client = None
+        try:
+            self.openai_client = openai.OpenAI()
+        except Exception as e:
+            logger.warning(f"OpenAI client initialization failed: {str(e)}")
 
     def get_user_data(self):
-        doc = db.collection("users").document(self.user_id).get()
-        data = doc.to_dict() if doc.exists else {
-            "preferences": ["low-carb"],
-            "history": [],
-            "email": "",
-            "height_cm": 170,
-            "weight_kg": 70,
-            "activity_level": "moderate",
-            "age": 30,
-            "gender": "not_specified"
-        }
-        logger.info(f"User data loaded: {json.dumps(data, indent=2)}")
-        return data
+        try:
+            doc = db.collection("users").document(self.user_id).get()
+            if not doc.exists:
+                # Create default user data
+                default_data = {
+                    "preferences": ["balanced"],
+                    "history": [],
+                    "email": "",
+                    "height_cm": 170,
+                    "weight_kg": 70,
+                    "activity_level": "moderate",
+                    "age": 30,
+                    "gender": "not_specified"
+                }
+                db.collection("users").document(self.user_id).set(default_data)
+                return default_data
+            return doc.to_dict()
+        except Exception as e:
+            logger.error(f"Error getting user data: {str(e)}")
+            # Return default data if Firestore fails
+            return {
+                "preferences": ["balanced"],
+                "history": [],
+                "email": "",
+                "height_cm": 170,
+                "weight_kg": 70,
+                "activity_level": "moderate",
+                "age": 30,
+                "gender": "not_specified"
+            }
 
     def get_recipes(self, limit=1000):
-        docs = db.collection("recipes").limit(limit).stream()
-        recipes = [{**doc.to_dict(), "recipe_id": doc.id} for doc in docs]
-        logger.info(f"Loaded {len(recipes)} recipes from database")
-        return recipes
+        try:
+            docs = db.collection("recipes").limit(limit).stream()
+            recipes = [{**doc.to_dict(), "recipe_id": doc.id} for doc in docs]
+            logger.info(f"Loaded {len(recipes)} recipes from database")
+            return recipes
+        except Exception as e:
+            logger.error(f"Error getting recipes: {str(e)}")
+            return []  # Return empty list if Firestore fails
 
     def calculate_bmi(self):
         height_m = self.user_data.get("height_cm", 170) / 100
@@ -47,15 +72,19 @@ class RecipeRecommender:
         return bmi
 
     def get_health_profile(self):
-        bmi = self.calculate_bmi()
-        if bmi < 18.5:
-            return "underweight", ["high-protein", "high-calorie", "nutrient-dense"]
-        elif bmi < 25:
-            return "normal", ["balanced", "moderate", "healthy"]
-        elif bmi < 30:
-            return "overweight", ["low-carb", "low-calorie", "high-protein"]
-        else:
-            return "obese", ["low-carb", "low-calorie", "high-protein"]
+        try:
+            bmi = self.calculate_bmi()
+            if bmi < 18.5:
+                return "underweight", ["high-protein", "high-calorie", "nutrient-dense"]
+            elif bmi < 25:
+                return "normal", ["balanced", "moderate", "healthy"]
+            elif bmi < 30:
+                return "overweight", ["low-carb", "low-calorie", "high-protein"]
+            else:
+                return "obese", ["low-carb", "low-calorie", "high-protein"]
+        except Exception as e:
+            logger.error(f"Error getting health profile: {str(e)}")
+            return "normal", ["balanced", "moderate", "healthy"]  # Default profile
 
     def estimate_calorie_needs(self):
         height = self.user_data.get("height_cm", 170)
@@ -86,7 +115,7 @@ class RecipeRecommender:
         
         logger.info(f"Estimated daily calories: {daily_calories:.0f}, per meal: {meal_calories:.0f}")
         return meal_calories
-
+#openaiapi
     def generate_recipe_with_llm(self, ingredients, target_calories):
         health_status, health_tags = self.get_health_profile()
         
@@ -138,7 +167,7 @@ class RecipeRecommender:
         except Exception as e:
             logger.error(f"Error generating recipe with LLM: {str(e)}")
             return self.generate_fallback_recipe(ingredients, target_calories)
-
+# fallback funct
     def generate_fallback_recipe(self, ingredients, target_calories):
         """Fallback recipe generation when LLM fails"""
         logger.info("Using fallback recipe generation")
@@ -212,44 +241,57 @@ class RecipeRecommender:
         return score
 
     def recommend(self, ingredients, top_n=5):
-        logger.info(f"Starting recommendation for ingredients: {ingredients}")
-        target_calories = self.estimate_calorie_needs()
-        
-        # Get existing recipes
-        scored_recipes = [(recipe, self.calculate_score(recipe, ingredients)) 
-                         for recipe in self.recipes]
-        valid_recipes = [(r, s) for r, s in scored_recipes if s > 0]
-        
-        # Sort by score and take top N-1 (leave room for generated recipe)
-        sorted_recipes = sorted(valid_recipes, key=lambda x: x[1], reverse=True)
-        top_recipes = [r[0] for r in sorted_recipes[:top_n-1]]
-        
-        logger.info(f"Found {len(top_recipes)} suitable existing recipes")
-        
-        # Generate a new recipe if we don't have enough matches
-        if len(top_recipes) < top_n:
-            generated = self.generate_recipe_with_llm(ingredients, target_calories)
-            if generated:
-                # Store the generated recipe
-                db.collection("recipes").document(generated["recipe_id"]).set(generated)
-                top_recipes.append(generated)
-        
-        # Update user history
-        for recipe in top_recipes:
-            history_entry = {
-                "recipe_id": recipe["recipe_id"],
-                "title": recipe["title"],
-                "ingredients": recipe["ingredients"],
-                "rating": None,  # To be updated after user feedback
-                "timestamp": datetime.now().isoformat()
-            }
-            self.user_data["history"].append(history_entry)
-        
-        # Update user data in Firestore
-        db.collection("users").document(self.user_id).set(self.user_data)
-        
-        logger.info(f"Returning {len(top_recipes)} recommendations")
-        return top_recipes
+        try:
+            logger.info(f"Starting recommendation for ingredients: {ingredients}")
+            target_calories = self.estimate_calorie_needs()
+            
+            # Get existing recipes
+            scored_recipes = [(recipe, self.calculate_score(recipe, ingredients)) 
+                            for recipe in self.recipes]
+            valid_recipes = [(r, s) for r, s in scored_recipes if s > 0]
+            
+            # Sort by score and take top N
+            sorted_recipes = sorted(valid_recipes, key=lambda x: x[1], reverse=True)
+            top_recipes = [r[0] for r in sorted_recipes[:top_n]]
+            
+            logger.info(f"Found {len(top_recipes)} suitable existing recipes")
+            
+            # Only try to generate a new recipe if we have OpenAI client and need more recipes
+            if len(top_recipes) < top_n and self.openai_client:
+                try:
+                    generated = self.generate_recipe_with_llm(ingredients, target_calories)
+                    if generated:
+                        # Store the generated recipe
+                        db.collection("recipes").document(generated["recipe_id"]).set(generated)
+                        top_recipes.append(generated)
+                except Exception as e:
+                    logger.error(f"Error generating recipe: {str(e)}")
+                    # Continue without generated recipe
+            
+            # Update user history if we have recipes
+            if top_recipes:
+                try:
+                    for recipe in top_recipes:
+                        history_entry = {
+                            "recipe_id": recipe["recipe_id"],
+                            "title": recipe["title"],
+                            "ingredients": recipe["ingredients"],
+                            "rating": None,
+                            "timestamp": datetime.now().isoformat()
+                        }
+                        self.user_data["history"].append(history_entry)
+                    
+                    # Update user data in Firestore
+                    db.collection("users").document(self.user_id).set(self.user_data)
+                except Exception as e:
+                    logger.error(f"Error updating user history: {str(e)}")
+                    # Continue without updating history
+            
+            logger.info(f"Returning {len(top_recipes)} recommendations")
+            return top_recipes
+        except Exception as e:
+            logger.error(f"Error in recommend method: {str(e)}")
+            return []  # Return empty list if anything fails
 
     def vectorize_ingredients(self, ingredients):
         all_ings = set().union(*[set(r["ingredients"]) for r in self.recipes])
