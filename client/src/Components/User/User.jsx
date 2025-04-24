@@ -22,6 +22,22 @@ const User = ({ userName, userEmail }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Fetch user data from local storage
+    const storedUser = JSON.parse(localStorage.getItem("userPreferences"));
+  
+    if (storedUser) {
+      setUserPreference(
+        `I am ${storedUser.name}, a ${storedUser.age}-year-old interested in ${storedUser.foodPreferences}. I have a history of ${storedUser.healthHistory} and allergies to ${storedUser.allergies}.`
+      );
+    } else {
+      setUserPreference("No preferences found.");
+    }
+  
+    setLoading(false);
+  }, []);
+  
+
+  useEffect(() => {
     const fetchHealthData = async () => {
       try {
         const token = localStorage.getItem('firebaseToken');

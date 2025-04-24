@@ -466,7 +466,7 @@ font-size: 0.8rem;
 }
 
 .error-message {
-<<<<<<< HEAD
+
   color: #dc3545;
   text-align: center;
   padding: 1rem;
@@ -530,12 +530,12 @@ font-size: 0.8rem;
 
 .recipe-details strong {
   color: #FFA500;
-=======
+
 color: #dc3545;
 text-align: center;
 padding: 1rem;
 background: rgba(220, 53, 69, 0.1);
 border-radius: 8px;
 margin: 1rem 0;
->>>>>>> 0368198571445ed2f560a1a3f1327d1127d49362
+
 }
