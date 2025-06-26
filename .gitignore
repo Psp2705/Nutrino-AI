@@ -29,6 +29,7 @@ firebase.js
 .env
 serviceAccountkey.json
 get_token.html
+__pycache__
 
 # Additional common ignores (optional)
 *.pem
