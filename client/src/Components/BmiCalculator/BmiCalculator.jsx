@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./BMICalculator.css";
+import "./BmiCalculator.css";
 
 const BmiCalculator = () => {
   const [weight, setWeight] = useState("");
