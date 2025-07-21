@@ -73,7 +73,7 @@ const BmiCalculator = () => {
     localStorage.setItem("bmiData", JSON.stringify(bmiData));
   };
 
-  const getWeightAdjustment = (bmiValue, action) => {
+  const getWeightAdjustment = () => {
     const normalBmi = 22; // Midpoint of the normal BMI range (18.5 - 24.9)
     const heightInMeters = height / 100;
     const idealWeight = normalBmi * heightInMeters * heightInMeters;
