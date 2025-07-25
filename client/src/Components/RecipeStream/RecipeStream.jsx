@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import axios from 'axios';
 import './RecipeStream.css'; // Ensure this file is updated with the new CSS
 
@@ -18,7 +18,7 @@ const RecipeStream = () => {
                 return;
             }
 
-            const response = await axios.post('http://localhost:8081/api/v1/recommendation', {
+            const response = await axios.post('${import.meta.env.VITE_API_URL}/api/v1/recommendation', {
                 action: 'recommend',
                 ingredients: preferredIngredients.split(',').map(ing => ing.trim()),
                 height_cm: parseFloat(height),

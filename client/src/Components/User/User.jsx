@@ -58,7 +58,7 @@ const User = ({ userName, userEmail }) => {
         });
 
         // Fetch BMI
-        const bmiResponse = await axios.post('http://localhost:8081/api/v1/recommendation', 
+        const bmiResponse = await axios.post('${import.meta.env.VITE_API_URL}/api/v1/recommendation', 
           { 
             action: 'calculate_bmi',
             user_id: userId
@@ -74,7 +74,7 @@ const User = ({ userName, userEmail }) => {
         console.log('BMI Response:', bmiResponse.data);
         
         // Fetch Health Profile
-        const healthProfileResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
+        const healthProfileResponse = await axios.post('${import.meta.env.VITE_API_URL}/api/v1/recommendation',
           { 
             action: 'get_health_profile',
             user_id: userId
@@ -83,7 +83,7 @@ const User = ({ userName, userEmail }) => {
         );
         
         // Fetch Calorie Needs
-        const caloriesResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
+        const caloriesResponse = await axios.post('${import.meta.env.VITE_API_URL}/api/v1/recommendation',
           { 
             action: 'estimate_calories',
             user_id: userId
@@ -227,7 +227,7 @@ const User = ({ userName, userEmail }) => {
           <div className="card work-card">
             {/* <div className="icon-placeholder"></div> */}
             <h2>My Recipes</h2>
-            <p>Explore a world of flavors tailored just for you! With a click, generate delicious recipes that match your preferences and health needs. Find your favorite recipes here and create meals you'll love, every time.</p>
+            <p>Explore a world of flavors tailored just for you! With a click, generate delicious recipes that match your preferences and health needs. Find your favorite recipes here and create meals you will love, every time.</p>
             <button onClick={handleGenerateRecipes}>Generate Recipes</button>
           </div>
           <div className="card about-card">
@@ -277,7 +277,7 @@ const SimilarUsers = () => {
           tokenExists: !!token
         });
 
-        const response = await axios.post('http://localhost:8081/api/v1/recommendation', 
+        const response = await axios.post('${import.meta.env.VITE_API_URL}/api/v1/recommendation', 
           {
             action: 'get_similar_users',
             user_id: userId,

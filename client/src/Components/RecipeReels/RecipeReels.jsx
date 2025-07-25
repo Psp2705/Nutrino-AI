@@ -46,7 +46,7 @@ const RecipeReels = () => {
         setError(null);
 
         // Fetch recipes directly without auth test
-        const recipesResponse = await axios.post('http://localhost:8081/api/v1/recommendation',
+        const recipesResponse = await axios.post('${import.meta.env.VITE_API_URL}/api/v1/recommendation',
           {
             action: 'get_user_recommendations',
             user_id: userId,
