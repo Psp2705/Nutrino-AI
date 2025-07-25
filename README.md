@@ -7,22 +7,22 @@
 
 ## 📌 Features
 
-- 1. **Hybrid Recommendation Engine**  
+-  **Hybrid Recommendation Engine**  
   Combines content-based and user-based filtering for precise and personalized suggestions.
 
-- 2. **AI Chatbot**  
+-  **AI Chatbot**  
   Provides real-time responses to nutrition-related queries using AI.
 
-- 3. **BMI Calculator**  
+-  **BMI Calculator**  
   Calculates and categorizes BMI (Underweight, Normal, Overweight, Obese) and offers personalized advice accordingly.
 
-- 4. **Diet & Recipe Suggestions**  
+-  **Diet & Recipe Suggestions**  
   Recommends meals based on allergies, preferences, and health goals using Edamam API.
 
-- 5. **Fitness Programs**  
+-  **Fitness Programs**  
   Offers video-based fitness guidance (Strength & Cardio) using YouTube API.
 
-- 6. **Nutritional Analytics**  
+-  **Nutritional Analytics**  
   Breaks down recommended meals by calories, macronutrients, and micronutrients.
 
 ---
@@ -111,15 +111,15 @@ OPENAI_API_KEY=your_openai_api_key
 
 ## 🌱 Future Enhancements
 
-- 1. Mobile App Version using React Native
-- 2. AI-Powered Meal Generator with GPT-based customization
-- 3. Goal-Based Recommendation Engine (weight loss, muscle gain, etc.)
-- 4. Multilingual Chatbot Support
-- 5. Daily/Weekly Diet Planner with email reminders
-- 6. PDF Export & Print Option for meal plans
-- 7. Advanced Analytics Dashboard
-- 8. OAuth + Google Login Integration
-- 9. Real-Time Calorie Tracking with fitness tracker integrations
+-  Mobile App Version using React Native
+-  AI-Powered Meal Generator with GPT-based customization
+-  Goal-Based Recommendation Engine (weight loss, muscle gain, etc.)
+-  Multilingual Chatbot Support
+-  Daily/Weekly Diet Planner with email reminders
+-  PDF Export & Print Option for meal plans
+-  Advanced Analytics Dashboard
+-  OAuth + Google Login Integration
+-  Real-Time Calorie Tracking with fitness tracker integrations
 
 ---
 
