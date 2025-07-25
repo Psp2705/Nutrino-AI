@@ -127,13 +127,13 @@ OPENAI_API_KEY=your_openai_api_key
 
 - **Hardware**: 8GB+ RAM, SSD, Intel i5/Ryzen 5
 - **Software**: Node.js, React.js, Python 3.x, Firebase
-- **Deployment**: Render (backend), Netlify/Vercel (frontend)
+- **Deployment**: Render (backend), Vercel (frontend)
 
 ---
 
 ## 👨‍💻 Authors
-
-- Aafreen Khan   
+   
 - Prachiti Parab  
+- Aafreen Khan
 - Sneha Gupta   
 - Tulsi Dubey 
