@@ -1,3 +1,7 @@
+#os junk
+.DS_Store
+Thumbs.db
+
 # Logs
 logs
 *.log
@@ -8,10 +12,19 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Dependency directories
-node_modules/
-dist/
+**/node_modules/
+**/dist/
+**/build/
 dist-ssr/
 *.local
+**/.next/
+**/.nuxt/
+**/.cache/
+**/.parcel-cache/
+**/vite-cache/
+**/coverage/
+**/tmp/
+**/logs/
 
 # Editor directories and files
 .vscode/*
@@ -27,11 +40,29 @@ dist-ssr/
 # Sensitive Firebase and environment files
 firebase.js
 .env
+.env.*
 serviceAccountkey.json
 get_token.html
-__pycache__
+__pycache__/
 
 # Additional common ignores (optional)
 *.pem
 *.key
 *.cert
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.mypy_cache/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+ENV/
